@@ -25,6 +25,25 @@ const LoadingFallback = () => (
   </div>
 );
 
+// Wrapper para animação suave de entrada de página
+const PageFade: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useLayoutEffect(() => {
+    // Pequeno delay para garantir que a classe inicial (opacity: 0) foi aplicada antes de trocar para active
+    const timer = requestAnimationFrame(() => {
+        setIsVisible(true);
+    });
+    return () => cancelAnimationFrame(timer);
+  }, []);
+
+  return (
+    <div className={`page-fade ${isVisible ? 'active' : ''}`}>
+      {children}
+    </div>
+  );
+};
+
 // Wrapper Inteligente para Suspense
 // Só mostra o fallback se o carregamento demorar mais de 300ms.
 // Caso contrário, não mostra nada (evitando o flash branco).
@@ -241,50 +260,52 @@ const App: React.FC = () => {
       <main className="flex-grow" ref={mainRef}>
         {/* Key é crucial aqui: força o componente a remontar e reiniciar o timer ao mudar de página */}
         <SuspenseWithDelayedFallback key={currentPage} fallback={<LoadingFallback />}>
-          {currentPage === 'home' && (
-            <div className="animate-fade-in">
-              <div id="inicio" className="bg-white">
-                <Hero onNavigate={navigateTo} />
-              </div>
+          <PageFade>
+            {currentPage === 'home' && (
+              <div className="animate-fade-in">
+                <div id="inicio" className="bg-white">
+                  <Hero onNavigate={navigateTo} />
+                </div>
 
-              <div id="servicos-resumo" className="reveal bg-white">
-                <Services onNavigate={navigateTo} />
-              </div>
-              
-              <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
-                <Testimonials />
-              </div>
+                <div id="servicos-resumo" className="reveal bg-white">
+                  <Services onNavigate={navigateTo} />
+                </div>
+                
+                <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
+                  <Testimonials />
+                </div>
 
-              <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-b border-gray-100">
-                <About onNavigate={navigateTo} />
-              </div>
+                <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-b border-gray-100">
+                  <About onNavigate={navigateTo} />
+                </div>
 
-              <div className="reveal bg-finacc-cream py-20 lg:py-28 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-finacc-evergreen/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
+                <div className="reveal bg-finacc-cream py-20 lg:py-28 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-finacc-evergreen/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
 
-                <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center">
-                    <h2 className="text-3xl lg:text-5xl font-medium text-finacc-evergreen mb-6 font-serif leading-tight">
-                      Vamos construir o futuro <br className="hidden md:block" /> da sua empresa?
-                    </h2>
-                    <p className="mb-10 max-w-2xl mx-auto text-gray-600 font-light sans-serif text-lg leading-relaxed">
-                      Não deixe para amanhã a otimização que o seu negócio precisa hoje. Estamos prontos para ser o seu parceiro estratégico.
-                    </p>
-                    <button 
-                      onClick={() => navigateTo('contact', 'formulario')}
-                      className="bg-finacc-palm text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-finacc-evergreen transition-all shadow-xl text-xs rounded-sm transform hover:-translate-y-1"
-                    >
-                      Fale Connosco
-                    </button>
+                  <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center">
+                      <h2 className="text-3xl lg:text-5xl font-medium text-finacc-evergreen mb-6 font-serif leading-tight">
+                        Vamos construir o futuro <br className="hidden md:block" /> da sua empresa?
+                      </h2>
+                      <p className="mb-10 max-w-2xl mx-auto text-gray-600 font-light sans-serif text-lg leading-relaxed">
+                        Não deixe para amanhã a otimização que o seu negócio precisa hoje. Estamos prontos para ser o seu parceiro estratégico.
+                      </p>
+                      <button 
+                        onClick={() => navigateTo('contact', 'formulario')}
+                        className="bg-finacc-palm text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-finacc-evergreen transition-all shadow-xl text-xs rounded-sm transform hover:-translate-y-1"
+                      >
+                        Fale Connosco
+                      </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
-          {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
-          {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
-          {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
+            {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
+            {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
+            {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
+            {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
+          </PageFade>
         </SuspenseWithDelayedFallback>
       </main>
       
