@@ -46,7 +46,7 @@ const ServiceSection: React.FC<{
           
           <div>
             <button 
-              onClick={() => onNavigate('home', 'contacto')}
+              onClick={() => onNavigate('contact', 'formulario')}
               className="inline-flex items-center gap-3 text-finacc-evergreen font-bold uppercase tracking-widest text-xs border-b border-finacc-evergreen pb-1 hover:text-finacc-palm hover:border-finacc-palm transition-colors sans-serif"
             >
               Pedir Proposta
@@ -209,7 +209,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
             Cada empresa é única. Agende uma reunião connosco para analisarmos as suas necessidades específicas.
           </p>
           <button 
-            onClick={() => onNavigate('home', 'contacto')}
+            onClick={() => onNavigate('contact', 'formulario')}
             className="bg-finacc-palm text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-finacc-evergreen transition-all shadow-lg text-xs"
           >
             Falar com Especialista

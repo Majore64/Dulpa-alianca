@@ -32,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
     { name: 'Início', page: 'home' },
     { name: 'Sobre', page: 'about' },
     { name: 'Serviços', page: 'services' },
-    { name: 'Testemunhos', page: 'home', hash: 'testemunhos' },
+    { name: 'Contactos', page: 'contact' },
   ];
 
   // Função auxiliar para verificar se o link está ativo
@@ -93,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
         {/* Botão Lateral */}
         <div className="flex-1 flex justify-end relative z-[110]">
           <button 
-            onClick={() => onNavigate('home', 'contacto')}
+            onClick={() => onNavigate('contact', 'formulario')}
             className={`hidden md:inline-flex items-center justify-center px-8 py-3 border border-finacc-evergreen text-finacc-evergreen hover:bg-finacc-evergreen hover:text-white transition-all duration-300 text-xs font-bold uppercase tracking-widest ${isScrolled ? 'rounded-md' : 'rounded-none'}`}
           >
             Fale Connosco
@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
             })}
             <div className="pt-8">
               <button 
-                onClick={() => handleLinkClick('home', 'contacto')}
+                onClick={() => handleLinkClick('contact', 'formulario')}
                 className="inline-block bg-finacc-evergreen text-white px-8 py-4 text-xs font-bold uppercase tracking-widest shadow-lg hover:bg-finacc-palm transition-colors w-full sm:w-auto"
               >
                 Contactar Agora

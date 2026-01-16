@@ -5,14 +5,14 @@ import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { Services } from './components/Services';
 import { Testimonials } from './components/Testimonials';
-import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 import { BackToTop } from './components/BackToTop';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
+import { ContactPage } from './components/ContactPage';
 
-export type PageType = 'home' | 'about' | 'services' | 'privacy';
+export type PageType = 'home' | 'about' | 'services' | 'privacy' | 'contact';
 
 const App: React.FC = () => {
   // Inicializa o estado verificando imediatamente a posição do scroll.
@@ -67,10 +67,13 @@ const App: React.FC = () => {
     if (isPageChange) {
       // Se mudou de página
       if (activeHash) {
-        const element = document.getElementById(activeHash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'auto', block: 'start' });
-        }
+        // Pequeno timeout para garantir que a nova página renderizou antes do scroll
+        setTimeout(() => {
+          const element = document.getElementById(activeHash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'auto', block: 'start' });
+          }
+        }, 10);
       } else {
         window.scrollTo(0, 0);
       }
@@ -119,19 +122,35 @@ const App: React.FC = () => {
             <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
               <Testimonials />
             </div>
+
+            {/* CTA Final da Home */}
+            <div className="reveal bg-finacc-cream py-20 lg:py-28 relative overflow-hidden">
+               {/* Decoração de fundo */}
+               <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+               <div className="absolute bottom-0 left-0 w-64 h-64 bg-finacc-evergreen/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
+
+               <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center">
+                  <h2 className="text-3xl lg:text-5xl font-medium text-finacc-evergreen mb-6 font-serif leading-tight">
+                    Vamos construir o futuro <br className="hidden md:block" /> da sua empresa?
+                  </h2>
+                  <p className="mb-10 max-w-2xl mx-auto text-gray-600 font-light sans-serif text-lg leading-relaxed">
+                    Não deixe para amanhã a otimização que o seu negócio precisa hoje. Estamos prontos para ser o seu parceiro estratégico.
+                  </p>
+                  <button 
+                    onClick={() => navigateTo('contact', 'formulario')}
+                    className="bg-finacc-palm text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-finacc-evergreen transition-all shadow-xl text-xs rounded-sm transform hover:-translate-y-1"
+                  >
+                    Fale Connosco
+                  </button>
+               </div>
+            </div>
           </>
         )}
 
         {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
         {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
         {currentPage === 'privacy' && <PrivacyPolicyPage />}
-
-        {/* Contacto APENAS na Home */}
-        {currentPage === 'home' && (
-          <div id="contacto" className="reveal bg-white border-t border-gray-100">
-            <Contact />
-          </div>
-        )}
+        {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
       </main>
       
       <Footer 
@@ -142,7 +161,7 @@ const App: React.FC = () => {
       {/* Botão flutuante mobile */}
       <div className="fixed bottom-6 right-6 z-40 md:hidden animate-fade-in [animation-delay:1s]">
         <button 
-          onClick={() => navigateTo('home', 'contacto')}
+          onClick={() => navigateTo('contact', 'formulario')}
           title="Contacte-nos agora"
           className="bg-finacc-palm text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform cursor-pointer"
         >
