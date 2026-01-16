@@ -1,0 +1,160 @@
+
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
+import { About } from './components/About';
+import { Services } from './components/Services';
+import { Testimonials } from './components/Testimonials';
+import { Contact } from './components/Contact';
+import { Footer } from './components/Footer';
+import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
+import { BackToTop } from './components/BackToTop';
+import { AboutPage } from './components/AboutPage';
+import { ServicesPage } from './components/ServicesPage';
+
+export type PageType = 'home' | 'about' | 'services' | 'privacy';
+
+const App: React.FC = () => {
+  // Inicializa o estado verificando imediatamente a posição do scroll.
+  const [scrolled, setScrolled] = useState(() => 
+    typeof window !== 'undefined' ? window.scrollY > 50 : false
+  );
+  
+  const [currentPage, setCurrentPage] = useState<PageType>('home');
+  const [activeHash, setActiveHash] = useState<string | undefined>(undefined);
+  
+  // Referência para guardar a página anterior e decidir o tipo de scroll
+  const prevPageRef = useRef<PageType>(currentPage);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    // Configuração do IntersectionObserver para animações de scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          // Parar de observar após animar para melhor performance e evitar "re-animação"
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { 
+      threshold: 0.1, // Dispara quando 10% do elemento está visível
+      rootMargin: '0px 0px -50px 0px' // Um pouco antes do fim da tela para efeito visual melhor
+    });
+
+    // Usa requestAnimationFrame para garantir que o DOM está pronto sem atraso artificial
+    const rafId = requestAnimationFrame(() => {
+      const reveals = document.querySelectorAll('.reveal');
+      reveals.forEach(el => observer.observe(el));
+    });
+
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+      cancelAnimationFrame(rafId);
+    };
+  }, [currentPage]); // Re-executa sempre que a página muda
+
+  // useLayoutEffect corre síncronamente após as mutações do DOM mas antes do browser "pintar" o ecrã.
+  useLayoutEffect(() => {
+    const isPageChange = currentPage !== prevPageRef.current;
+    
+    if (isPageChange) {
+      // Se mudou de página
+      if (activeHash) {
+        const element = document.getElementById(activeHash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+      } else {
+        window.scrollTo(0, 0);
+      }
+    } else {
+      // Se estamos na mesma página e apenas mudou o hash
+      if (activeHash) {
+        const element = document.getElementById(activeHash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    prevPageRef.current = currentPage;
+  }, [currentPage, activeHash]);
+
+  const navigateTo = (page: PageType, hash?: string) => {
+    setCurrentPage(page);
+    setActiveHash(hash);
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col relative bg-white">
+      <Navbar 
+        isScrolled={scrolled} 
+        onNavigate={navigateTo}
+        activePage={currentPage}
+        activeHash={activeHash}
+      />
+      
+      <main className="flex-grow">
+        {currentPage === 'home' && (
+          <>
+            <div id="inicio" className="bg-white">
+              <Hero onNavigate={navigateTo} />
+            </div>
+            {/* Sobre Resumido */}
+            <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-y border-gray-100">
+              <About onNavigate={navigateTo} />
+            </div>
+            {/* Serviços Resumido */}
+            <div id="servicos-resumo" className="reveal bg-white">
+              <Services onNavigate={navigateTo} />
+            </div>
+            
+            <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
+              <Testimonials />
+            </div>
+          </>
+        )}
+
+        {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
+        {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
+        {currentPage === 'privacy' && <PrivacyPolicyPage />}
+
+        {/* Contacto APENAS na Home */}
+        {currentPage === 'home' && (
+          <div id="contacto" className="reveal bg-white border-t border-gray-100">
+            <Contact />
+          </div>
+        )}
+      </main>
+      
+      <Footer 
+        onOpenPrivacy={() => navigateTo('privacy')} 
+        onNavigate={navigateTo} 
+      />
+      
+      {/* Botão flutuante mobile */}
+      <div className="fixed bottom-6 right-6 z-40 md:hidden animate-fade-in [animation-delay:1s]">
+        <button 
+          onClick={() => navigateTo('home', 'contacto')}
+          title="Contacte-nos agora"
+          className="bg-finacc-palm text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
+        </button>
+      </div>
+
+      <BackToTop />
+    </div>
+  );
+};
+
+export default App;
