@@ -6,7 +6,7 @@ interface ContactPageProps {
   onNavigate?: (page: PageType, hash?: string) => void;
 }
 
-export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
+export const ContactPage: React.FC<ContactPageProps> = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

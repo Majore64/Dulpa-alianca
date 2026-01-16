@@ -7,7 +7,7 @@ interface PrivacyPolicyPageProps {
   onNavigate?: (page: PageType, hash?: string) => void;
 }
 
-export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate }) => {
+export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
