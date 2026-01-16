@@ -7,10 +7,11 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   // Imagem Hero (LCP) otimizada:
-  // w_1600: Largura suficiente para ecrãs grandes e retina
+  // w_1200: Reduzido de 1600px para eliminar aviso "appropriately-sized images"
+  // Mantém qualidade suficiente para a coluna de 40% em desktops (2x density)
   // f_auto: Formato automático (AVIF/WebP)
   // q_auto: Qualidade automática
-  const heroImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_1600,f_auto,q_auto/v1768555596/IMG_4504_qdtzo6.jpg";
+  const heroImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_1200,f_auto,q_auto/v1768555596/IMG_4504_qdtzo6.jpg";
 
   return (
     <section id="inicio" className="relative min-h-[85vh] lg:min-h-[80vh] flex items-center pt-32 pb-8 lg:pt-40 lg:pb-12 bg-finacc-cream overflow-hidden">

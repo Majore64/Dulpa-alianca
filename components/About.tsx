@@ -7,9 +7,9 @@ interface AboutProps {
 
 export const About: React.FC<AboutProps> = ({ onNavigate }) => {
   // Imagem otimizada:
-  // w_800: Tamanho adequado para a coluna (aprox 500px em desktop)
+  // w_600: Ajustado para o tamanho real renderizado (~500px em desktop).
   // f_auto, q_auto: Otimização Cloudinary
-  const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_800,f_auto,q_auto/v1768561909/Imagem1_xruavv.png";
+  const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_600,f_auto,q_auto/v1768561909/Imagem1_xruavv.png";
 
   return (
     <section className="py-12 lg:py-16 bg-finacc-cream border-t border-gray-200">
