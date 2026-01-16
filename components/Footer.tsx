@@ -52,8 +52,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onNavigate }) => 
           
           {/* Coluna 2: Navegação */}
           <div>
-            <h4 className="text-xs font-bold mb-6 text-finacc-palm uppercase tracking-widest sans-serif">Navegação</h4>
-            <ul className="space-y-3 text-gray-400 font-light text-xs sans-serif">
+            {/* H4 changed to H3 for hierarchy, color changed to white for contrast */}
+            <h3 className="text-xs font-bold mb-6 text-white uppercase tracking-widest sans-serif">Navegação</h3>
+            <ul className="space-y-3 text-gray-300 font-light text-xs sans-serif">
               <li><button onClick={() => onNavigate('home')} className="hover:text-white transition-colors text-left py-1 block w-full">Página Inicial</button></li>
               <li><button onClick={() => onNavigate('about')} className="hover:text-white transition-colors text-left py-1 block w-full">Sobre Nós</button></li>
               <li><button onClick={() => onNavigate('services')} className="hover:text-white transition-colors text-left py-1 block w-full">Nossos Serviços</button></li>
@@ -64,8 +65,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onNavigate }) => 
           
           {/* Coluna 3: Especialidades (Completa com 6 items) */}
           <div>
-            <h4 className="text-xs font-bold mb-6 text-finacc-palm uppercase tracking-widest sans-serif">Especialidades</h4>
-            <ul className="space-y-3 text-gray-400 font-light text-xs sans-serif">
+            {/* H4 changed to H3 for hierarchy, color changed to white for contrast */}
+            <h3 className="text-xs font-bold mb-6 text-white uppercase tracking-widest sans-serif">Especialidades</h3>
+            <ul className="space-y-3 text-gray-300 font-light text-xs sans-serif">
               <li><button onClick={() => onNavigate('services', 'contabilidade')} className="hover:text-white transition-colors text-left py-1 block w-full">Contabilidade</button></li>
               <li><button onClick={() => onNavigate('services', 'fiscalidade')} className="hover:text-white transition-colors text-left py-1 block w-full">Gestão Fiscal</button></li>
               <li><button onClick={() => onNavigate('services', 'rh')} className="hover:text-white transition-colors text-left py-1 block w-full">Recursos Humanos</button></li>
@@ -76,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onNavigate }) => 
           </div>
         </div>
         
-        <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-500 text-[10px] uppercase tracking-widest font-medium sans-serif">
+        <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-400 text-[10px] uppercase tracking-widest font-medium sans-serif">
           <p className="mb-4 md:mb-0">© {new Date().getFullYear()} Dupla Aliança Lda.</p>
           <div className="flex space-x-4">
             <button onClick={onOpenPrivacy} className="hover:text-white transition-colors">Política de Privacidade</button>

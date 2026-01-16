@@ -7,8 +7,8 @@ interface AboutProps {
 }
 
 export const About: React.FC<AboutProps> = ({ onNavigate }) => {
-  // Imagem atualizada com otimização automática de qualidade e formato
-  const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/f_auto,q_auto/v1768561909/Imagem1_xruavv.png";
+  // Imagem atualizada com otimização automática de qualidade, formato e largura
+  const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_800,f_auto,q_auto/v1768561909/Imagem1_xruavv.png";
 
   return (
     <section className="py-12 lg:py-16 bg-finacc-cream border-t border-gray-200">

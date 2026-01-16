@@ -65,7 +65,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             <div className="absolute top-6 -left-6 w-full h-full border border-finacc-palm/20 z-0 rounded-sm"></div>
             {/* Lazy loading + SrcSet para performance */}
             <img 
-              src={`${baseUrl}/f_auto,q_auto${imagePath}`}
+              src={`${baseUrl}/w_1200,f_auto,q_auto${imagePath}`}
               srcSet={aboutPageMainImageSrcSet}
               sizes="(max-width: 1024px) 100vw, 50vw"
               alt="Instalações do escritório de contabilidade Dupla Aliança em Guimarães" 

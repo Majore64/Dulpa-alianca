@@ -30,7 +30,8 @@ const ServiceSection: React.FC<{
     ${baseUrl}/w_1200,f_auto,q_auto/${restUrl} 1200w
   `;
   
-  const mainSrc = `${baseUrl}/f_auto,q_auto/${restUrl}`;
+  // Imagem principal com limite de largura para evitar carregamento excessivo
+  const mainSrc = `${baseUrl}/w_800,f_auto,q_auto/${restUrl}`;
 
   return (
     // Aumentado padding vertical para py-28 lg:py-40

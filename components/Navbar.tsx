@@ -150,7 +150,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
             </div>
           </div>
           
-          <div className="mt-auto text-center text-finacc-evergreen/50 text-[10px] uppercase tracking-widest pb-4">
+          {/* Increased contrast for accessibility */}
+          <div className="mt-auto text-center text-gray-600 text-[10px] uppercase tracking-widest pb-4">
             Desde 2003 • Guimarães
           </div>
         </div>

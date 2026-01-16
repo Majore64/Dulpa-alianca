@@ -7,8 +7,11 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  // Imagem atualizada do Cloudinary
-  const heroImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/v1768555596/IMG_4504_qdtzo6.jpg";
+  // Imagem atualizada do Cloudinary com transformações de performance
+  // f_auto: formato automático (webp/avif)
+  // q_auto: qualidade automática
+  // w_1600: largura máxima de 1600px para evitar carregar imagem gigante original
+  const heroImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_1600,f_auto,q_auto/v1768555596/IMG_4504_qdtzo6.jpg";
 
   return (
     <section id="inicio" className="relative min-h-[85vh] lg:min-h-[80vh] flex items-center pt-32 pb-8 lg:pt-40 lg:pb-12 bg-finacc-cream overflow-hidden">
@@ -21,7 +24,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="w-full lg:w-3/5 text-center lg:text-left pt-6 lg:pt-0">
           {/* Adicionado opacity-0 para evitar glitch */}
           <div className="inline-block mb-3 lg:mb-4 animate-fade-in-up opacity-0">
-            <span className="text-finacc-palm font-bold uppercase tracking-[0.25em] text-[9px] lg:text-[10px] border-b border-finacc-palm pb-1 sans-serif">
+            {/* Increased contrast from finacc-palm to finacc-evergreen/80 for WCAG compliance */}
+            <span className="text-finacc-evergreen/80 font-bold uppercase tracking-[0.25em] text-[9px] lg:text-[10px] border-b border-finacc-palm pb-1 sans-serif">
               Contabilidade & Estratégia
             </span>
           </div>

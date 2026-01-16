@@ -17,7 +17,8 @@ const TestimonialCard: React.FC<{ quote: string; author: string; role: string; i
         />
       </div>
       <div>
-        <h4 className="font-bold text-white text-sm tracking-wide font-serif leading-tight">{author}</h4>
+        {/* Changed H4 to H3 for proper heading hierarchy */}
+        <h3 className="font-bold text-white text-sm tracking-wide font-serif leading-tight">{author}</h3>
         <p className="text-finacc-palm text-[9px] font-bold uppercase tracking-widest mt-0.5 sans-serif opacity-80 leading-tight">{role}</p>
       </div>
     </div>
