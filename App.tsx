@@ -4,7 +4,6 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 
 // Otimização: Lazy loading para componentes abaixo da dobra (Remove JS desnecessário do bundle inicial)
-// Usa padrão .then() para lidar com named exports sem alterar os ficheiros originais
 const About = lazy(() => import('./components/About').then(module => ({ default: module.About })));
 const Services = lazy(() => import('./components/Services').then(module => ({ default: module.Services })));
 const Testimonials = lazy(() => import('./components/Testimonials').then(module => ({ default: module.Testimonials })));
@@ -31,6 +30,9 @@ const PAGE_ROUTES: Record<PageType, string> = {
 
 // Função auxiliar para determinar a página atual baseada na URL
 const getPageFromUrl = (): PageType => {
+  // Garante que funciona mesmo se window não estiver definido (SSR safe, embora seja SPA)
+  if (typeof window === 'undefined') return 'home';
+  
   const path = window.location.pathname.replace(/\/$/, '') || '/';
   const entry = Object.entries(PAGE_ROUTES).find(([_, route]) => route === path);
   return entry ? (entry[0] as PageType) : 'home';
@@ -43,17 +45,20 @@ const App: React.FC = () => {
   );
   
   // Inicialização baseada na URL (Suporte a Deep Linking)
+  // Passamos a função diretamente para o useState para lazy initialization
   const [currentPage, setCurrentPage] = useState<PageType>(getPageFromUrl);
   
   // Captura hash inicial se existir
   const [activeHash, setActiveHash] = useState<string | undefined>(() => {
-    return window.location.hash.slice(1) || undefined;
+    return typeof window !== 'undefined' ? (window.location.hash.slice(1) || undefined) : undefined;
   });
   
   // Referência para guardar a página anterior
   const prevPageRef = useRef<PageType>(currentPage);
   // Referência para identificar navegação via Back/Forward do browser
   const isPopState = useRef(false);
+  // Referência para o container principal para o MutationObserver
+  const mainRef = useRef<HTMLElement>(null);
 
   // Listener para Back/Forward do browser (PopState)
   useEffect(() => {
@@ -106,47 +111,67 @@ const App: React.FC = () => {
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink) {
       const baseUrl = 'http://www.duplaalianca.pt';
-      // Se for home, o path é vazio (para evitar //), caso contrário usa a rota definida
       const path = PAGE_ROUTES[currentPage] === '/' ? '' : PAGE_ROUTES[currentPage];
       canonicalLink.setAttribute('href', `${baseUrl}${path}`);
     }
   }, [currentPage]);
 
+  // CORREÇÃO CRÍTICA: IntersectionObserver + MutationObserver
+  // Isto garante que as animações 'reveal' funcionam mesmo com Lazy Loading
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
 
-    // Configuração do IntersectionObserver para animações de scroll
-    const observer = new IntersectionObserver((entries) => {
+    const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('active');
-          // Parar de observar após animar para melhor performance e evitar "re-animação"
           observer.unobserve(entry.target);
         }
       });
-    }, { 
-      threshold: 0.1, // Dispara quando 10% do elemento está visível
-      rootMargin: '0px 0px -50px 0px' // Um pouco antes do fim da tela para efeito visual melhor
+    };
+
+    const observer = new IntersectionObserver(observerCallback, { 
+      threshold: 0.1, 
+      rootMargin: '0px 0px -50px 0px' 
     });
 
-    // Usa requestAnimationFrame para garantir que o DOM está pronto sem atraso artificial
-    const rafId = requestAnimationFrame(() => {
+    // Função que procura elementos .reveal e anexa o observer
+    const scanAndObserve = () => {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(el => observer.observe(el));
-    });
+    };
+
+    // 1. Executa scan inicial
+    const rafId = requestAnimationFrame(scanAndObserve);
+
+    // 2. Configura MutationObserver para detetar quando o Suspense resolve e injeta conteúdo
+    let mutationObserver: MutationObserver | null = null;
+    
+    if (mainRef.current) {
+      mutationObserver = new MutationObserver((mutations) => {
+        // Se houve adição de nós (conteúdo lazy carregou), fazemos scan novamente
+        const hasAddedNodes = mutations.some(m => m.addedNodes.length > 0);
+        if (hasAddedNodes) {
+          scanAndObserve();
+        }
+      });
+      
+      mutationObserver.observe(mainRef.current, { childList: true, subtree: true });
+    }
 
     window.addEventListener('scroll', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
+      if (mutationObserver) mutationObserver.disconnect();
       cancelAnimationFrame(rafId);
     };
-  }, [currentPage]); // Re-executa sempre que a página muda
+  }, [currentPage]); // Re-executa sempre que a página muda para re-ligar os observers ao novo conteúdo
 
-  // useLayoutEffect para gestão do Scroll
+  // useLayoutEffect para gestão do Scroll e Navegação
   useLayoutEffect(() => {
     // Se a navegação foi via Back/Forward, deixa o browser gerir o scroll restoration nativo
     if (isPopState.current) {
@@ -157,26 +182,29 @@ const App: React.FC = () => {
 
     const isPageChange = currentPage !== prevPageRef.current;
     
+    // Função helper para tentar scrollar para o hash (com retry para lazy load)
+    const tryScrollToHash = (hash: string, attempts = 0) => {
+      const element = document.getElementById(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (attempts < 20) {
+        // Tenta novamente a cada 100ms se o elemento não existir (max 2 seg)
+        // Isto resolve o problema de links para secções dentro de componentes lazy
+        setTimeout(() => tryScrollToHash(hash, attempts + 1), 100);
+      }
+    };
+    
     if (isPageChange) {
       // Se mudou de página
       if (activeHash) {
-        // Pequeno timeout para garantir que a nova página renderizou antes do scroll
-        setTimeout(() => {
-          const element = document.getElementById(activeHash);
-          if (element) {
-            element.scrollIntoView({ behavior: 'auto', block: 'start' });
-          }
-        }, 50);
+        tryScrollToHash(activeHash);
       } else {
         window.scrollTo(0, 0);
       }
     } else {
       // Se estamos na mesma página e apenas mudou o hash
       if (activeHash) {
-        const element = document.getElementById(activeHash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        tryScrollToHash(activeHash);
       }
     }
 
@@ -195,7 +223,7 @@ const App: React.FC = () => {
 
     setCurrentPage(page);
     setActiveHash(hash);
-    isPopState.current = false; // Garante que navegação manual reseta o estado de popstate
+    isPopState.current = false; 
   };
 
   return (
@@ -207,7 +235,8 @@ const App: React.FC = () => {
         activeHash={activeHash}
       />
       
-      <main className="flex-grow">
+      {/* Adicionada ref ao main para o MutationObserver vigiar Lazy Loading */}
+      <main className="flex-grow" ref={mainRef}>
         <Suspense fallback={<LoadingFallback />}>
           {currentPage === 'home' && (
             <>
