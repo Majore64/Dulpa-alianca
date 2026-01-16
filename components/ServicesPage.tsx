@@ -16,30 +16,31 @@ const ServiceSection: React.FC<{
   isEven?: boolean;
   onNavigate: (page: PageType, hash?: string) => void;
 }> = ({ id, title, description, items, number, imageUrl, isEven = false, onNavigate }) => (
-  <div id={id} className={`py-20 lg:py-24 scroll-mt-28 reveal ${isEven ? 'bg-finacc-cream' : 'bg-white'}`}>
+  // Aumentado padding vertical para py-28 lg:py-40
+  <div id={id} className={`py-28 lg:py-40 scroll-mt-28 reveal ${isEven ? 'bg-[#FDFCF8]' : 'bg-white'}`}>
     <div className="container mx-auto px-6 lg:px-12">
-      <div className={`flex flex-col ${isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 lg:gap-24 items-center`}>
+      <div className={`flex flex-col ${isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-32 items-center`}>
         
         {/* Lado do Conteúdo (Texto e Lista) */}
         <div className="w-full lg:w-1/2">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-finacc-palm font-serif text-5xl opacity-20 font-bold">
+          <div className="flex items-center gap-6 mb-8">
+            <span className="text-finacc-palm font-serif text-6xl opacity-10 font-bold">
                {number}
             </span>
-            <div className="h-px w-16 bg-finacc-evergreen/20"></div>
+            <div className="h-px w-24 bg-finacc-evergreen/10"></div>
           </div>
           
-          <h2 className="text-3xl lg:text-4xl font-medium text-finacc-evergreen font-serif mb-6">{title}</h2>
+          <h2 className="text-4xl lg:text-5xl font-medium text-finacc-evergreen font-serif mb-8">{title}</h2>
           
-          <p className="text-lg text-gray-600 font-light mb-8 leading-relaxed sans-serif">
+          <p className="text-xl text-gray-600 font-light mb-12 leading-loose sans-serif max-w-xl">
             {description}
           </p>
 
-          <div className="space-y-4 mb-10">
+          <div className="space-y-6 mb-14">
             {items.map((item, idx) => (
-              <div key={idx} className="flex items-start gap-4 group">
-                <div className="w-1.5 h-1.5 bg-finacc-palm mt-2.5 rounded-full group-hover:scale-150 transition-transform flex-shrink-0"></div>
-                <span className="text-gray-700 font-light sans-serif text-base">{item}</span>
+              <div key={idx} className="flex items-start gap-5 group">
+                <div className="w-1.5 h-1.5 bg-finacc-palm mt-2.5 rounded-full group-hover:scale-150 transition-transform flex-shrink-0 opacity-60"></div>
+                <span className="text-gray-700 font-light sans-serif text-lg">{item}</span>
               </div>
             ))}
           </div>
@@ -47,22 +48,27 @@ const ServiceSection: React.FC<{
           <div>
             <button 
               onClick={() => onNavigate('contact', 'formulario')}
-              className="inline-flex items-center gap-3 text-finacc-evergreen font-bold uppercase tracking-widest text-xs border-b border-finacc-evergreen pb-1 hover:text-finacc-palm hover:border-finacc-palm transition-colors sans-serif"
+              className="inline-flex items-center gap-3 text-finacc-evergreen font-bold uppercase tracking-widest text-xs border-b-2 border-finacc-evergreen/20 pb-2 hover:text-finacc-palm hover:border-finacc-palm transition-all sans-serif pt-2"
             >
-              Pedir Proposta
+              Pedir Proposta Personalizada
             </button>
           </div>
         </div>
 
         {/* Lado da Imagem (Visual) */}
         <div className="w-full lg:w-1/2">
-          <div className="relative">
-             <div className={`absolute top-4 -right-4 w-full h-full border border-finacc-evergreen/10 z-0 ${isEven ? 'left-4' : '-right-4'}`}></div>
+          <div className="relative p-4">
+             {/* Moldura mais subtil e afastada */}
+             <div className={`absolute top-0 -right-0 w-full h-full border border-finacc-evergreen/5 z-0 ${isEven ? 'left-0' : '-right-0'}`}></div>
+             {/* Lazy loading aplicado para performance */}
              <img 
                 src={imageUrl} 
-                alt={title} 
-                className="relative z-10 w-full h-full object-cover aspect-[16/10] shadow-lg grayscale-[15%] hover:grayscale-0 transition-all duration-700 rounded-sm"
+                alt={`Serviço de ${title} prestado pela Dupla Aliança em Guimarães`} 
+                width="600"
+                height="400"
+                className="relative z-10 w-full h-full object-cover aspect-[16/11] shadow-2xl grayscale-[5%] hover:grayscale-0 transition-all duration-1000 rounded-sm"
                 loading="lazy"
+                decoding="async"
               />
           </div>
         </div>
@@ -84,23 +90,24 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="pt-24 animate-fade-in bg-white">
-      <header className="text-center py-20 px-6 bg-finacc-cream border-b border-gray-200">
-        <h4 className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-6 sans-serif animate-fade-in-up opacity-0">O Que Fazemos</h4>
-        <h1 className="text-4xl lg:text-6xl font-medium text-finacc-evergreen mb-6 font-serif animate-fade-in-up delay-100 opacity-0">Nossos Serviços</h1>
-        <p className="text-xl text-gray-600 max-w-4xl mx-auto font-light sans-serif leading-relaxed animate-fade-in-up delay-200 opacity-0">
+      {/* Header - Aumentado padding */}
+      <header className="text-center py-28 lg:py-36 px-6 bg-finacc-cream border-b border-gray-100">
+        <h4 className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-8 sans-serif animate-fade-in-up opacity-0">O Que Fazemos</h4>
+        <h1 className="text-5xl lg:text-7xl font-medium text-finacc-evergreen mb-8 font-serif animate-fade-in-up delay-100 opacity-0">Nossos Serviços</h1>
+        <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto font-light sans-serif leading-relaxed animate-fade-in-up delay-200 opacity-0">
           Expandimos a nossa oferta para proporcionar um apoio ainda mais abrangente, garantindo a solidez e o crescimento estratégico do seu negócio.
         </p>
       </header>
 
-      {/* Navegação Rápida Interna - Sticky + Z-Index fix */}
-      <nav className="z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 py-4 mb-4 overflow-x-auto sticky top-[72px] lg:static animate-fade-in delay-300 opacity-0">
-        <div className="container mx-auto px-6 flex gap-8 md:gap-12 justify-start md:justify-center min-w-max">
+      {/* Navegação Rápida - Mais espaço */}
+      <nav className="z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 py-6 mb-4 overflow-x-auto sticky top-[72px] lg:static animate-fade-in delay-300 opacity-0">
+        <div className="container mx-auto px-6 flex gap-8 md:gap-16 justify-start md:justify-center min-w-max">
           {navLinks.map(link => (
             <a 
               key={link.id}
               href={`#${link.id}`} 
               onClick={(e) => { e.preventDefault(); document.getElementById(link.id)?.scrollIntoView({behavior: 'smooth'}); }} 
-              className="relative group text-xs font-bold text-gray-500 hover:text-finacc-palm uppercase tracking-widest transition-colors sans-serif whitespace-nowrap py-2"
+              className="relative group text-xs font-bold text-gray-400 hover:text-finacc-palm uppercase tracking-widest transition-colors sans-serif whitespace-nowrap py-2"
             >
               {link.label}
               <span className="absolute left-0 bottom-0 w-full h-0.5 bg-finacc-palm transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
@@ -202,15 +209,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         onNavigate={onNavigate}
       />
 
-      <div className="bg-finacc-evergreen text-white text-center py-20 reveal">
+      <div className="bg-finacc-evergreen text-white text-center py-32 reveal">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl lg:text-4xl font-medium mb-6 font-serif text-white">Precisa de uma solução à medida?</h2>
-          <p className="mb-10 max-w-2xl mx-auto text-gray-300 font-light sans-serif text-lg">
+          <h2 className="text-4xl lg:text-5xl font-medium mb-8 font-serif text-white">Precisa de uma solução à medida?</h2>
+          <p className="mb-12 max-w-2xl mx-auto text-gray-300 font-light sans-serif text-xl leading-relaxed">
             Cada empresa é única. Agende uma reunião connosco para analisarmos as suas necessidades específicas.
           </p>
           <button 
             onClick={() => onNavigate('contact', 'formulario')}
-            className="bg-finacc-palm text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-finacc-evergreen transition-all shadow-lg text-xs"
+            className="bg-finacc-palm text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-white hover:text-finacc-evergreen transition-all shadow-xl text-xs rounded-sm transform hover:-translate-y-1"
           >
             Falar com Especialista
           </button>

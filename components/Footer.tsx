@@ -56,6 +56,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onNavigate }) => 
             <ul className="space-y-3 text-gray-400 font-light text-xs sans-serif">
               <li><button onClick={() => onNavigate('home')} className="hover:text-white transition-colors text-left py-1 block w-full">Página Inicial</button></li>
               <li><button onClick={() => onNavigate('about')} className="hover:text-white transition-colors text-left py-1 block w-full">Sobre Nós</button></li>
+              <li><button onClick={() => onNavigate('services')} className="hover:text-white transition-colors text-left py-1 block w-full">Nossos Serviços</button></li>
               <li><button onClick={() => onNavigate('home', 'testemunhos')} className="hover:text-white transition-colors text-left py-1 block w-full">Testemunhos</button></li>
               <li><button onClick={() => onNavigate('contact')} className="hover:text-white transition-colors py-1 block w-full text-left">Contactos</button></li>
             </ul>

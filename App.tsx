@@ -26,6 +26,42 @@ const App: React.FC = () => {
   // Referência para guardar a página anterior e decidir o tipo de scroll
   const prevPageRef = useRef<PageType>(currentPage);
 
+  // SEO DINÂMICO: Atualiza o título e a descrição da página
+  useEffect(() => {
+    let title = "Dupla Aliança | Contabilidade e Auditoria em Guimarães";
+    let description = "Gabinete de Contabilidade em Guimarães. Especialistas em Contabilidade, Fiscalidade, Recursos Humanos, Auditoria e Revisão Legal de Contas. Desde 2003.";
+
+    switch (currentPage) {
+      case 'about':
+        title = "Sobre Nós - Dupla Aliança | Contabilidade";
+        description = "Conheça a equipa da Dupla Aliança. Economistas e Contabilistas Certificados em Guimarães dedicados ao sucesso da sua empresa.";
+        break;
+      case 'services':
+        title = "Nossos Serviços - Contabilidade, Fiscalidade e RH";
+        description = "Serviços completos: Contabilidade, Gestão Fiscal, Recursos Humanos, Consultoria e Auditoria. Soluções à medida do seu negócio.";
+        break;
+      case 'contact':
+        title = "Contactos - Dupla Aliança | Agende uma Reunião";
+        description = "Entre em contacto connosco. Estamos situados em Guimarães, perto da Universidade do Minho (Azurém). Tel: 253 517 059.";
+        break;
+      case 'privacy':
+        title = "Política de Privacidade - Dupla Aliança";
+        break;
+      case 'home':
+      default:
+        // Mantém os valores padrão
+        break;
+    }
+
+    document.title = title;
+    
+    // Atualiza a meta tag de descrição
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', description);
+    }
+  }, [currentPage]);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);

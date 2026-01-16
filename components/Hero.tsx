@@ -58,14 +58,20 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           {/* Adicionado opacity-0 para evitar glitch */}
           <div className="relative z-10 animate-fade-in [animation-delay:400ms] opacity-0">
             {/* 
-               Formatos ajustados: 
-               - Aspect ratio mantido mas container mais estreito para equilibrar o layout
+               PERFORMANCE:
+               - loading="eager" pois é a imagem LCP (Largest Contentful Paint)
+               - fetchPriority="high" para priorizar o download
+               - width/height explícitos para evitar CLS (Cumulative Layout Shift)
             */}
             <img 
               src={heroImageUrl} 
-              alt="Escritório Dupla Aliança" 
+              alt="Escritório Dupla Aliança - Contabilidade e Consultoria em Guimarães" 
+              width="800"
+              height="600"
               className="w-full object-cover object-center shadow-2xl rounded-sm brightness-[1.02] contrast-[1.02] aspect-[4/3] lg:aspect-[3/4] xl:aspect-[4/3]"
               loading="eager"
+              // @ts-ignore
+              fetchpriority="high"
             />
             {/* Moldura Decorativa */}
             <div className="absolute top-4 -right-4 w-full h-full border border-finacc-palm/30 -z-10 hidden lg:block rounded-sm"></div>
