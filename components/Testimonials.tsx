@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 
 const TestimonialCard: React.FC<{ quote: string; author: string; role: string; img: string }> = ({ quote, author, role, img }) => (
@@ -13,6 +12,7 @@ const TestimonialCard: React.FC<{ quote: string; author: string; role: string; i
           width="40"
           height="40"
           loading="lazy"
+          decoding="async"
           className="w-10 h-10 rounded-full mr-4 border border-finacc-palm/50 object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" 
         />
       </div>
