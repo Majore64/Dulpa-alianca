@@ -110,17 +110,20 @@ const App: React.FC = () => {
             <div id="inicio" className="bg-white">
               <Hero onNavigate={navigateTo} />
             </div>
-            {/* Sobre Resumido */}
-            <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-y border-gray-100">
-              <About onNavigate={navigateTo} />
-            </div>
-            {/* Serviços Resumido */}
+
+            {/* Serviços Resumido - Movido para cima */}
             <div id="servicos-resumo" className="reveal bg-white">
               <Services onNavigate={navigateTo} />
             </div>
             
+            {/* Testemunhos - Movido para depois de Serviços */}
             <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
               <Testimonials />
+            </div>
+
+            {/* Sobre Resumido - Movido para depois de Testemunhos */}
+            <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-b border-gray-100">
+              <About onNavigate={navigateTo} />
             </div>
 
             {/* CTA Final da Home */}

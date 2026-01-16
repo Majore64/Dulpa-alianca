@@ -56,14 +56,15 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
     <nav className={`fixed w-full z-[100] top-0 flex justify-center ${transitionClass}`}>
       <div className={`${transitionClass} flex items-center justify-between px-6 md:px-12 ${
         isScrolled 
-          ? 'w-full glass-nav shadow-sm py-4' 
-          : 'w-full bg-transparent py-6 lg:py-10'
+          ? 'w-full glass-nav shadow-sm py-2.5' // Reduzido de py-4
+          : 'w-full bg-transparent py-4 lg:py-6' // Reduzido de py-6 lg:py-10
       }`}>
         
         {/* Logo */}
         <div className="flex-1 relative z-[110]">
           <button onClick={() => handleLinkClick('home')} className="flex flex-col items-start group">
-            <span className="text-2xl md:text-3xl font-bold tracking-tight text-finacc-evergreen leading-none font-serif">
+            {/* Reduzido de text-2xl md:text-3xl para text-xl md:text-2xl */}
+            <span className="text-xl md:text-2xl font-bold tracking-tight text-finacc-evergreen leading-none font-serif">
               Dupla<span className="text-finacc-palm italic">Aliança</span>
             </span>
           </button>
@@ -77,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
               <button 
                 key={item.name}
                 onClick={() => onNavigate(item.page, item.hash)}
-                className={`relative group text-xs font-bold uppercase tracking-[0.25em] transition-colors sans-serif py-2 ${
+                className={`relative group text-[11px] font-bold uppercase tracking-[0.25em] transition-colors sans-serif py-2 ${
                   active ? 'text-finacc-palm' : 'text-gray-500 hover:text-finacc-palm'
                 }`}
               >
@@ -94,7 +95,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
         <div className="flex-1 flex justify-end relative z-[110]">
           <button 
             onClick={() => onNavigate('contact', 'formulario')}
-            className={`hidden md:inline-flex items-center justify-center px-8 py-3 border border-finacc-evergreen text-finacc-evergreen hover:bg-finacc-evergreen hover:text-white transition-all duration-300 text-xs font-bold uppercase tracking-widest ${isScrolled ? 'rounded-md' : 'rounded-none'}`}
+            // Reduzido padding de px-8 py-3 para px-6 py-2
+            className={`hidden md:inline-flex items-center justify-center px-6 py-2 border border-finacc-evergreen text-finacc-evergreen hover:bg-finacc-evergreen hover:text-white transition-all duration-300 text-[10px] font-bold uppercase tracking-widest ${isScrolled ? 'rounded-md' : 'rounded-none'}`}
           >
             Fale Connosco
           </button>
@@ -105,12 +107,12 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
             aria-label={mobileMenuOpen ? "Fechar Menu" : "Abrir Menu"}
           >
             {mobileMenuOpen ? (
-               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
+               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
             ) : (
               <div className="space-y-1.5">
-                <span className="block w-8 h-0.5 bg-finacc-evergreen"></span>
-                <span className="block w-8 h-0.5 bg-finacc-evergreen"></span>
-                <span className="block w-5 h-0.5 bg-finacc-evergreen ml-auto"></span>
+                <span className="block w-6 h-0.5 bg-finacc-evergreen"></span>
+                <span className="block w-6 h-0.5 bg-finacc-evergreen"></span>
+                <span className="block w-4 h-0.5 bg-finacc-evergreen ml-auto"></span>
               </div>
             )}
           </button>
@@ -119,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
 
       {/* Mobile Menu */}
       <div className={`fixed inset-0 bg-finacc-cream z-[100] transition-transform duration-500 ease-in-out lg:hidden ${mobileMenuOpen ? 'translate-y-0' : 'translate-y-full'}`}>
-        <div className="p-8 flex flex-col h-full relative overflow-hidden pt-28">
+        <div className="p-8 flex flex-col h-full relative overflow-hidden pt-24">
           {/* Background decor */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           
