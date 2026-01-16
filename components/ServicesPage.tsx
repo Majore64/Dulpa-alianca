@@ -18,8 +18,7 @@ const ServiceSection: React.FC<{
 }> = ({ id, title, description, items, number, imageUrl, isEven = false, onNavigate }) => {
 
   // Construção do SRCSET para responsividade usando a URL do Cloudinary fornecida
-  // Assumindo formato padrão do Cloudinary: /image/upload/v...
-  // Injetamos transformações w_ antes do /v
+  // Divide a URL para injetar transformações: f_auto (formato), q_auto (qualidade), w_... (largura)
   const parts = imageUrl.split('/upload/');
   const baseUrl = parts[0] + '/upload';
   const restUrl = parts[1];
@@ -30,7 +29,7 @@ const ServiceSection: React.FC<{
     ${baseUrl}/w_1200,f_auto,q_auto/${restUrl} 1200w
   `;
   
-  // Imagem principal com limite de largura para evitar carregamento excessivo
+  // Imagem principal com limite de largura (800px) e otimização automática
   const mainSrc = `${baseUrl}/w_800,f_auto,q_auto/${restUrl}`;
 
   return (
@@ -122,14 +121,16 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
       </header>
 
       {/* Navegação Rápida - Mais espaço */}
-      <nav className="z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 py-6 mb-4 overflow-x-auto sticky top-[72px] lg:static animate-fade-in delay-300 opacity-0">
+      {/* Removido 'sticky top-[72px]' e 'lg:static' para que seja estático sempre */}
+      <nav className="z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 py-6 mb-4 overflow-x-auto animate-fade-in delay-300 opacity-0">
         <div className="container mx-auto px-6 flex gap-8 md:gap-16 justify-start md:justify-center min-w-max">
           {navLinks.map(link => (
             <a 
               key={link.id}
               href={`#${link.id}`} 
               onClick={(e) => { e.preventDefault(); document.getElementById(link.id)?.scrollIntoView({behavior: 'smooth'}); }} 
-              className="relative group text-xs font-bold text-gray-400 hover:text-finacc-palm uppercase tracking-widest transition-colors sans-serif whitespace-nowrap py-2"
+              // Alterado de text-gray-400 para text-gray-600 para aumentar o contraste
+              className="relative group text-xs font-bold text-gray-600 hover:text-finacc-palm uppercase tracking-widest transition-colors sans-serif whitespace-nowrap py-2"
             >
               {link.label}
               <span className="absolute left-0 bottom-0 w-full h-0.5 bg-finacc-palm transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>

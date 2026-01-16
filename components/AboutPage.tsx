@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { PageType } from '../App';
 
@@ -11,15 +10,18 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Base URL
+  // Base URL e Path
   const baseUrl = "https://res.cloudinary.com/dsxketzvb/image/upload";
   const imagePath = "/v1768555596/IMG_4504_qdtzo6.jpg";
   
-  // Responsive sources using Cloudinary transformations
+  // SrcSet responsivo com transformações Cloudinary:
+  // f_auto: Formato otimizado
+  // q_auto: Qualidade otimizada
+  // w_...: Várias larguras
   const aboutPageMainImageSrcSet = `
-    ${baseUrl}/w_400,c_scale,q_auto,f_auto${imagePath} 400w,
-    ${baseUrl}/w_800,c_scale,q_auto,f_auto${imagePath} 800w,
-    ${baseUrl}/w_1200,c_scale,q_auto,f_auto${imagePath} 1200w
+    ${baseUrl}/w_400,f_auto,q_auto${imagePath} 400w,
+    ${baseUrl}/w_800,f_auto,q_auto${imagePath} 800w,
+    ${baseUrl}/w_1200,f_auto,q_auto${imagePath} 1200w
   `;
 
   const values = [

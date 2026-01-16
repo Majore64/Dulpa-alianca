@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { PageType } from '../App';
 
@@ -7,10 +6,10 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  // Imagem atualizada do Cloudinary com transformações de performance
-  // f_auto: formato automático (webp/avif)
-  // q_auto: qualidade automática
-  // w_1600: largura máxima de 1600px para evitar carregar imagem gigante original
+  // Imagem Hero (LCP) otimizada:
+  // w_1600: Largura suficiente para ecrãs grandes e retina
+  // f_auto: Formato automático (AVIF/WebP)
+  // q_auto: Qualidade automática
   const heroImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_1600,f_auto,q_auto/v1768555596/IMG_4504_qdtzo6.jpg";
 
   return (
@@ -24,8 +23,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="w-full lg:w-3/5 text-center lg:text-left pt-6 lg:pt-0">
           {/* Adicionado opacity-0 para evitar glitch */}
           <div className="inline-block mb-3 lg:mb-4 animate-fade-in-up opacity-0">
-            {/* Increased contrast from finacc-palm to finacc-evergreen/80 for WCAG compliance */}
-            <span className="text-finacc-evergreen/80 font-bold uppercase tracking-[0.25em] text-[9px] lg:text-[10px] border-b border-finacc-palm pb-1 sans-serif">
+            {/* Removida opacidade (/80) para garantir contraste sólido e conformidade total */}
+            <span className="text-finacc-evergreen font-bold uppercase tracking-[0.25em] text-[9px] lg:text-[10px] border-b border-finacc-palm pb-1 sans-serif">
               Contabilidade & Estratégia
             </span>
           </div>
@@ -62,10 +61,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           {/* Adicionado opacity-0 para evitar glitch */}
           <div className="relative z-10 animate-fade-in [animation-delay:400ms] opacity-0">
             {/* 
-               PERFORMANCE:
-               - loading="eager" pois é a imagem LCP (Largest Contentful Paint)
-               - fetchPriority="high" para priorizar o download
-               - width/height explícitos para evitar CLS (Cumulative Layout Shift)
+               PERFORMANCE LCP:
+               - loading="eager"
+               - fetchpriority="high"
+               - width/height explícitos
             */}
             <img 
               src={heroImageUrl} 

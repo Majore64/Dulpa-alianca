@@ -78,8 +78,9 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onNavigate, activePa
               <button 
                 key={item.name}
                 onClick={() => onNavigate(item.page, item.hash)}
+                // Alterado de text-gray-500 para text-gray-700 para aumentar o contraste
                 className={`relative group text-[11px] font-bold uppercase tracking-[0.25em] transition-colors sans-serif py-2 ${
-                  active ? 'text-finacc-palm' : 'text-gray-500 hover:text-finacc-palm'
+                  active ? 'text-finacc-palm' : 'text-gray-700 hover:text-finacc-palm'
                 }`}
               >
                 {item.name}

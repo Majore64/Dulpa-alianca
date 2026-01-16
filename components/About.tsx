@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { PageType } from '../App';
 
@@ -7,7 +6,9 @@ interface AboutProps {
 }
 
 export const About: React.FC<AboutProps> = ({ onNavigate }) => {
-  // Imagem atualizada com otimização automática de qualidade, formato e largura
+  // Imagem otimizada:
+  // w_800: Tamanho adequado para a coluna (aprox 500px em desktop)
+  // f_auto, q_auto: Otimização Cloudinary
   const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/w_800,f_auto,q_auto/v1768561909/Imagem1_xruavv.png";
 
   return (
@@ -18,6 +19,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
           <div className="w-full lg:w-5/12 reveal">
             <div className="relative">
               <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-finacc-palm opacity-50"></div>
+              {/* Imagem com loading lazy */}
               <img 
                 src={aboutImageUrl}
                 alt="Equipa da Dupla Aliança no escritório em Guimarães" 
