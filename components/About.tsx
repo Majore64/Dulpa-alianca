@@ -7,8 +7,8 @@ interface AboutProps {
 }
 
 export const About: React.FC<AboutProps> = ({ onNavigate }) => {
-  // Imagem atualizada
-  const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/v1768561909/Imagem1_xruavv.png";
+  // Imagem atualizada com otimização automática de qualidade e formato
+  const aboutImageUrl = "https://res.cloudinary.com/dsxketzvb/image/upload/f_auto,q_auto/v1768561909/Imagem1_xruavv.png";
 
   return (
     <section className="py-12 lg:py-16 bg-finacc-cream border-t border-gray-200">
@@ -20,16 +20,20 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
               <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-finacc-palm opacity-50"></div>
               <img 
                 src={aboutImageUrl}
-                alt="Equipa Dupla Aliança" 
+                alt="Equipa da Dupla Aliança no escritório em Guimarães" 
+                width="600"
+                height="450"
                 className="relative z-10 w-full shadow-elegant object-cover aspect-[4/3] rounded-sm grayscale-[10%]"
                 loading="lazy"
+                decoding="async"
               />
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-finacc-palm/10 -z-10 rounded-full blur-xl"></div>
             </div>
           </div>
           
           <div className="w-full lg:w-7/12 reveal pt-2 lg:pt-0">
-            <h4 className="text-finacc-palm font-bold uppercase tracking-[0.3em] text-[10px] mb-3 sans-serif">Quem Somos</h4>
+            {/* Alterado de h4 para p para manter a hierarquia semântica correta */}
+            <p className="text-finacc-palm font-bold uppercase tracking-[0.3em] text-[10px] mb-3 sans-serif">Quem Somos</p>
             <h2 className="text-2xl sm:text-3xl lg:text-3xl font-medium text-finacc-evergreen mb-6 leading-tight">
               O Seu Parceiro Estratégico para o <span className="italic text-finacc-palm">Crescimento Sustentável</span>.
             </h2>
@@ -49,7 +53,8 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
                   <span className="font-serif italic font-bold text-sm">01</span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-finacc-evergreen mb-1 sans-serif uppercase tracking-wide">Competência Técnica</h4>
+                  {/* Cards agora usam h3 */}
+                  <h3 className="text-sm font-bold text-finacc-evergreen mb-1 sans-serif uppercase tracking-wide">Competência Técnica</h3>
                   <p className="text-xs text-gray-600 leading-relaxed">Equipa qualificada para apoiar nas decisões mais importantes.</p>
                 </div>
               </div>
@@ -58,7 +63,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
                   <span className="font-serif italic font-bold text-sm">02</span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-finacc-evergreen mb-1 sans-serif uppercase tracking-wide">Confidencialidade</h4>
+                  <h3 className="text-sm font-bold text-finacc-evergreen mb-1 sans-serif uppercase tracking-wide">Confidencialidade</h3>
                   <p className="text-xs text-gray-600 leading-relaxed">Gestão segura e rigorosa da informação do seu negócio.</p>
                 </div>
               </div>

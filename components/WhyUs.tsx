@@ -25,7 +25,9 @@ export const WhyUs: React.FC = () => {
         <div className="flex flex-col lg:flex-row items-center gap-20">
           
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <h4 className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-[10px] mb-6 reveal opacity-0">Diferenciais Dupla Aliança</h4>
+            {/* Header fix: H4 -> P */}
+            <p className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-[10px] mb-6 reveal opacity-0">Diferenciais Dupla Aliança</p>
+            {/* Header fix: H2 is correct here */}
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-12 reveal opacity-0 [transition-delay:100ms] leading-tight tracking-tight">
               Excelência e proximidade <br/><span className="playfair italic font-normal text-finacc-palm">desde 2003</span>
             </h2>
@@ -59,8 +61,12 @@ export const WhyUs: React.FC = () => {
               <div className="absolute -inset-10 bg-finacc-palm/10 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
               <img 
                 src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=1000&fm=webp" 
-                alt="Consultoria Dupla Aliança" 
+                alt="Reunião de consultoria estratégica da Dupla Aliança" 
+                width="800"
+                height="600"
                 className="rounded-[3rem] shadow-2xl relative z-10 w-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700 brightness-90 hover:brightness-100 border border-white/5"
+                loading="lazy"
+                decoding="async"
               />
               {/* Badge Flutuante */}
               <div className="absolute top-10 -right-10 bg-finacc-palm text-white p-8 rounded-[2rem] shadow-2xl z-20 hidden xl:block">

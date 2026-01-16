@@ -7,7 +7,14 @@ const TestimonialCard: React.FC<{ quote: string; author: string; role: string; i
     
     <div className="flex items-center mb-5">
       <div className="relative flex-shrink-0">
-        <img src={img} alt={author} className="w-10 h-10 rounded-full mr-4 border border-finacc-palm/50 object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
+        <img 
+          src={img} 
+          alt={`Foto de cliente: ${author}`} 
+          width="40"
+          height="40"
+          loading="lazy"
+          className="w-10 h-10 rounded-full mr-4 border border-finacc-palm/50 object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" 
+        />
       </div>
       <div>
         <h4 className="font-bold text-white text-sm tracking-wide font-serif leading-tight">{author}</h4>
@@ -81,12 +88,13 @@ export const Testimonials: React.FC = () => {
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-8 lg:mb-12 reveal">
           <div>
-            <h4 className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-[10px] mb-2 sans-serif">Depoimentos</h4>
+            {/* H4 -> P para pre-titulo */}
+            <p className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-[10px] mb-2 sans-serif">Depoimentos</p>
             <h2 className="text-2xl lg:text-3xl font-medium text-white tracking-tight">A voz dos nossos <span className="italic text-finacc-palm font-serif">Parceiros</span></h2>
           </div>
           <div className="hidden md:flex gap-2">
-             <button onClick={() => scrollToSlide(Math.max(0, activeIndex - 1))} className="p-2 border border-white/10 text-white hover:bg-finacc-palm hover:border-finacc-palm transition-all rounded-full"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
-             <button onClick={() => scrollToSlide(Math.min(testimonials.length - 1, activeIndex + 1))} className="p-2 border border-white/10 text-white hover:bg-finacc-palm hover:border-finacc-palm transition-all rounded-full"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
+             <button aria-label="Anterior" onClick={() => scrollToSlide(Math.max(0, activeIndex - 1))} className="p-2 border border-white/10 text-white hover:bg-finacc-palm hover:border-finacc-palm transition-all rounded-full"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
+             <button aria-label="Próximo" onClick={() => scrollToSlide(Math.min(testimonials.length - 1, activeIndex + 1))} className="p-2 border border-white/10 text-white hover:bg-finacc-palm hover:border-finacc-palm transition-all rounded-full"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
           </div>
         </div>
 

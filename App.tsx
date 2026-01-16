@@ -188,7 +188,7 @@ const App: React.FC = () => {
 
         {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
         {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
-        {currentPage === 'privacy' && <PrivacyPolicyPage />}
+        {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
         {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
       </main>
       

@@ -11,8 +11,16 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Imagem atualizada para a secção Quem Somos
-  const aboutPageMainImage = "https://res.cloudinary.com/dsxketzvb/image/upload/v1768555596/IMG_4504_qdtzo6.jpg";
+  // Base URL
+  const baseUrl = "https://res.cloudinary.com/dsxketzvb/image/upload";
+  const imagePath = "/v1768555596/IMG_4504_qdtzo6.jpg";
+  
+  // Responsive sources using Cloudinary transformations
+  const aboutPageMainImageSrcSet = `
+    ${baseUrl}/w_400,c_scale,q_auto,f_auto${imagePath} 400w,
+    ${baseUrl}/w_800,c_scale,q_auto,f_auto${imagePath} 800w,
+    ${baseUrl}/w_1200,c_scale,q_auto,f_auto${imagePath} 1200w
+  `;
 
   const values = [
     {
@@ -35,10 +43,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
     <div className="bg-finacc-cream pt-24 pb-20 animate-fade-in">
       {/* Hero Section - Aumentado padding e max-width para melhor leitura */}
-      <section className="relative py-24 lg:py-32 bg-white mb-20 lg:mb-32 border-b border-gray-100">
+      <section className="relative py-20 lg:py-28 bg-white mb-20 lg:mb-32 border-b border-gray-100">
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <div className="max-w-4xl">
-            <h4 className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-8 sans-serif animate-fade-in-up opacity-0">A Nossa Essência</h4>
+            {/* H4 -> P */}
+            <p className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-8 sans-serif animate-fade-in-up opacity-0">A Nossa Essência</p>
             <h1 className="text-4xl lg:text-7xl font-medium text-finacc-evergreen mb-10 leading-tight font-serif animate-fade-in-up delay-100 opacity-0">
               Mais do que números,<br />somos a sua <span className="italic text-finacc-palm">Dupla Aliança</span>.
             </h1>
@@ -54,9 +63,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         <section className="mb-32 lg:mb-40 flex flex-col lg:flex-row gap-16 lg:gap-24 items-center reveal">
           <div className="w-full lg:w-1/2 relative">
             <div className="absolute top-6 -left-6 w-full h-full border border-finacc-palm/20 z-0 rounded-sm"></div>
-            {/* Lazy loading para performance */}
+            {/* Lazy loading + SrcSet para performance */}
             <img 
-              src={aboutPageMainImage} 
+              src={`${baseUrl}/f_auto,q_auto${imagePath}`}
+              srcSet={aboutPageMainImageSrcSet}
+              sizes="(max-width: 1024px) 100vw, 50vw"
               alt="Instalações do escritório de contabilidade Dupla Aliança em Guimarães" 
               width="800"
               height="600"
@@ -69,7 +80,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             <h2 className="text-3xl lg:text-4xl font-medium text-finacc-evergreen mb-10 font-serif">Quem Somos</h2>
             <div className="space-y-8 text-gray-600 text-lg leading-loose font-light sans-serif">
               <p>
-                A <strong>Dupla Aliança Lda</strong> é uma empresa especializada em contabilidade, fiscalidade e recursos humanos, dedicada a fornecer soluções financeiras personalizadas e estratégicas.
+                A <strong>Dupla Aliança Lda</strong> é uma empresa especializada em <button onClick={() => onNavigate('services')} className="text-finacc-palm hover:underline font-medium focus:outline-none">contabilidade, fiscalidade e recursos humanos</button>, dedicada a fornecer soluções financeiras personalizadas e estratégicas.
               </p>
               <p>
                 O nosso compromisso assenta em três pilares fundamentais: qualidade irrepreensível nos serviços prestados, competência técnica da nossa equipa e confidencialidade absoluta na gestão da informação dos nossos clientes.
@@ -97,6 +108,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                 <div className="w-14 h-14 bg-finacc-cream text-finacc-palm rounded-full flex items-center justify-center mb-8 group-hover:bg-finacc-palm group-hover:text-white transition-colors duration-300 relative z-10 shadow-sm">
                   {v.icon}
                 </div>
+                {/* H3 para cards é semanticamente correto aqui */}
                 <h3 className="text-xl lg:text-2xl font-medium text-finacc-evergreen mb-5 font-serif transition-colors duration-300 relative z-10">{v.title}</h3>
                 <p className="text-gray-500 text-base leading-relaxed font-light sans-serif transition-colors duration-300 relative z-10">{v.desc}</p>
               </div>
@@ -134,7 +146,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           
           <div className="relative z-10">
             <div className="mb-16 max-w-3xl">
-              <h4 className="text-finacc-palm font-bold uppercase tracking-[0.2em] text-xs mb-6 sans-serif">Equipa</h4>
+              {/* H4 -> P */}
+              <p className="text-finacc-palm font-bold uppercase tracking-[0.2em] text-xs mb-6 sans-serif">Equipa</p>
               <h2 className="text-3xl lg:text-5xl font-serif mb-8 text-white">A Nossa Equipa de Especialistas</h2>
               <p className="text-gray-300 leading-relaxed font-light sans-serif text-xl max-w-2xl">
                 Profissionais qualificados e experientes, dedicados a oferecer o melhor serviço aos nossos clientes.

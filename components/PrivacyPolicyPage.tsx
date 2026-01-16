@@ -1,14 +1,20 @@
 
 import React, { useEffect } from 'react';
+import { PageType } from '../App';
 
-export const PrivacyPolicyPage: React.FC = () => {
+// We need to update the props to include onNavigate if we want functional breadcrumbs here
+interface PrivacyPolicyPageProps {
+  onNavigate?: (page: PageType, hash?: string) => void;
+}
+
+export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="bg-white pt-32 pb-32 animate-fade-in">
-      <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+    <div className="bg-white pt-24 pb-32 animate-fade-in">
+      <div className="container mx-auto px-6 md:px-12 max-w-4xl pt-12">
         <header className="mb-20 border-b border-gray-100 pb-10">
           <h1 className="text-4xl md:text-6xl font-medium text-finacc-evergreen mb-6 font-serif">Política de Privacidade</h1>
           <p className="text-gray-500 text-xl font-light sans-serif">Dupla Aliança - Contabilidade e Fiscalidade</p>

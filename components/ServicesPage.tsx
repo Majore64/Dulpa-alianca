@@ -15,68 +15,88 @@ const ServiceSection: React.FC<{
   imageUrl: string;
   isEven?: boolean;
   onNavigate: (page: PageType, hash?: string) => void;
-}> = ({ id, title, description, items, number, imageUrl, isEven = false, onNavigate }) => (
-  // Aumentado padding vertical para py-28 lg:py-40
-  <div id={id} className={`py-28 lg:py-40 scroll-mt-28 reveal ${isEven ? 'bg-[#FDFCF8]' : 'bg-white'}`}>
-    <div className="container mx-auto px-6 lg:px-12">
-      <div className={`flex flex-col ${isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-32 items-center`}>
-        
-        {/* Lado do Conteúdo (Texto e Lista) */}
-        <div className="w-full lg:w-1/2">
-          <div className="flex items-center gap-6 mb-8">
-            <span className="text-finacc-palm font-serif text-6xl opacity-10 font-bold">
-               {number}
-            </span>
-            <div className="h-px w-24 bg-finacc-evergreen/10"></div>
-          </div>
-          
-          <h2 className="text-4xl lg:text-5xl font-medium text-finacc-evergreen font-serif mb-8">{title}</h2>
-          
-          <p className="text-xl text-gray-600 font-light mb-12 leading-loose sans-serif max-w-xl">
-            {description}
-          </p>
+}> = ({ id, title, description, items, number, imageUrl, isEven = false, onNavigate }) => {
 
-          <div className="space-y-6 mb-14">
-            {items.map((item, idx) => (
-              <div key={idx} className="flex items-start gap-5 group">
-                <div className="w-1.5 h-1.5 bg-finacc-palm mt-2.5 rounded-full group-hover:scale-150 transition-transform flex-shrink-0 opacity-60"></div>
-                <span className="text-gray-700 font-light sans-serif text-lg">{item}</span>
-              </div>
-            ))}
-          </div>
+  // Construção do SRCSET para responsividade usando a URL do Cloudinary fornecida
+  // Assumindo formato padrão do Cloudinary: /image/upload/v...
+  // Injetamos transformações w_ antes do /v
+  const parts = imageUrl.split('/upload/');
+  const baseUrl = parts[0] + '/upload';
+  const restUrl = parts[1];
+  
+  const srcSet = `
+    ${baseUrl}/w_400,f_auto,q_auto/${restUrl} 400w,
+    ${baseUrl}/w_800,f_auto,q_auto/${restUrl} 800w,
+    ${baseUrl}/w_1200,f_auto,q_auto/${restUrl} 1200w
+  `;
+  
+  const mainSrc = `${baseUrl}/f_auto,q_auto/${restUrl}`;
+
+  return (
+    // Aumentado padding vertical para py-28 lg:py-40
+    <div id={id} className={`py-28 lg:py-40 scroll-mt-28 reveal ${isEven ? 'bg-[#FDFCF8]' : 'bg-white'}`}>
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className={`flex flex-col ${isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-32 items-center`}>
           
-          <div>
-            <button 
-              onClick={() => onNavigate('contact', 'formulario')}
-              className="inline-flex items-center gap-3 text-finacc-evergreen font-bold uppercase tracking-widest text-xs border-b-2 border-finacc-evergreen/20 pb-2 hover:text-finacc-palm hover:border-finacc-palm transition-all sans-serif pt-2"
-            >
-              Pedir Proposta Personalizada
-            </button>
+          {/* Lado do Conteúdo (Texto e Lista) */}
+          <div className="w-full lg:w-1/2">
+            <div className="flex items-center gap-6 mb-8">
+              <span className="text-finacc-palm font-serif text-6xl opacity-10 font-bold">
+                {number}
+              </span>
+              <div className="h-px w-24 bg-finacc-evergreen/10"></div>
+            </div>
+            
+            <h2 className="text-4xl lg:text-5xl font-medium text-finacc-evergreen font-serif mb-8">{title}</h2>
+            
+            <p className="text-xl text-gray-600 font-light mb-12 leading-loose sans-serif max-w-xl">
+              {description}
+            </p>
+
+            <div className="space-y-6 mb-14">
+              {items.map((item, idx) => (
+                <div key={idx} className="flex items-start gap-5 group">
+                  <div className="w-1.5 h-1.5 bg-finacc-palm mt-2.5 rounded-full group-hover:scale-150 transition-transform flex-shrink-0 opacity-60"></div>
+                  <span className="text-gray-700 font-light sans-serif text-lg">{item}</span>
+                </div>
+              ))}
+            </div>
+            
+            <div>
+              <button 
+                onClick={() => onNavigate('contact', 'formulario')}
+                className="inline-flex items-center gap-3 text-finacc-evergreen font-bold uppercase tracking-widest text-xs border-b-2 border-finacc-evergreen/20 pb-2 hover:text-finacc-palm hover:border-finacc-palm transition-all sans-serif pt-2"
+              >
+                Pedir Proposta Personalizada
+              </button>
+            </div>
           </div>
+
+          {/* Lado da Imagem (Visual) */}
+          <div className="w-full lg:w-1/2">
+            <div className="relative p-4">
+              {/* Moldura mais subtil e afastada */}
+              <div className={`absolute top-0 -right-0 w-full h-full border border-finacc-evergreen/5 z-0 ${isEven ? 'left-0' : '-right-0'}`}></div>
+              {/* Lazy loading aplicado para performance e srcset para responsividade */}
+              <img 
+                  src={mainSrc}
+                  srcSet={srcSet}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  alt={`Serviço de ${title} prestado pela Dupla Aliança em Guimarães`} 
+                  width="600"
+                  height="400"
+                  className="relative z-10 w-full h-full object-cover aspect-[16/11] shadow-2xl grayscale-[5%] hover:grayscale-0 transition-all duration-1000 rounded-sm"
+                  loading="lazy"
+                  decoding="async"
+                />
+            </div>
+          </div>
+
         </div>
-
-        {/* Lado da Imagem (Visual) */}
-        <div className="w-full lg:w-1/2">
-          <div className="relative p-4">
-             {/* Moldura mais subtil e afastada */}
-             <div className={`absolute top-0 -right-0 w-full h-full border border-finacc-evergreen/5 z-0 ${isEven ? 'left-0' : '-right-0'}`}></div>
-             {/* Lazy loading aplicado para performance */}
-             <img 
-                src={imageUrl} 
-                alt={`Serviço de ${title} prestado pela Dupla Aliança em Guimarães`} 
-                width="600"
-                height="400"
-                className="relative z-10 w-full h-full object-cover aspect-[16/11] shadow-2xl grayscale-[5%] hover:grayscale-0 transition-all duration-1000 rounded-sm"
-                loading="lazy"
-                decoding="async"
-              />
-          </div>
-        </div>
-
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
   const navLinks = [
@@ -91,8 +111,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
   return (
     <div className="pt-24 animate-fade-in bg-white">
       {/* Header - Aumentado padding */}
-      <header className="text-center py-28 lg:py-36 px-6 bg-finacc-cream border-b border-gray-100">
-        <h4 className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-8 sans-serif animate-fade-in-up opacity-0">O Que Fazemos</h4>
+      <header className="text-center py-20 lg:py-28 px-6 bg-finacc-cream border-b border-gray-100">
+        {/* H4 -> P */}
+        <p className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-8 sans-serif animate-fade-in-up opacity-0">O Que Fazemos</p>
         <h1 className="text-5xl lg:text-7xl font-medium text-finacc-evergreen mb-8 font-serif animate-fade-in-up delay-100 opacity-0">Nossos Serviços</h1>
         <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto font-light sans-serif leading-relaxed animate-fade-in-up delay-200 opacity-0">
           Expandimos a nossa oferta para proporcionar um apoio ainda mais abrangente, garantindo a solidez e o crescimento estratégico do seu negócio.

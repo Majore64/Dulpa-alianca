@@ -20,7 +20,6 @@ const ServiceCard: React.FC<{
     className="bg-white p-6 border-t-2 border-transparent hover:border-finacc-palm shadow-subtle hover:shadow-elegant transition-all duration-500 reveal h-full flex flex-col group rounded-sm cursor-pointer"
     style={{ transitionDelay: `${delay}ms` }}
   >
-    {/* Alteração aqui: group-hover:bg-finacc-palm (Fundo Verde) e group-hover:text-finacc-evergreen (Ícone Azul Escuro) */}
     <div className="w-10 h-10 bg-finacc-cream rounded-lg flex items-center justify-center text-finacc-evergreen mb-5 group-hover:bg-finacc-palm group-hover:text-finacc-evergreen transition-all duration-500">
       {icon}
     </div>
@@ -79,13 +78,13 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex flex-col md:flex-row justify-between items-end mb-10 lg:mb-12 reveal">
           <div className="max-w-2xl">
-            <h2 className="text-finacc-palm font-bold uppercase tracking-[0.3em] text-[10px] mb-3 sans-serif">O Que Fazemos</h2>
-            <h3 className="text-2xl sm:text-3xl lg:text-3xl font-medium text-finacc-evergreen">Soluções Corporativas Integradas</h3>
+            {/* Header semântico corrigido: H2 é o título principal da secção, o "O Que Fazemos" é visual */}
+            <p className="text-finacc-palm font-bold uppercase tracking-[0.3em] text-[10px] mb-3 sans-serif">O Que Fazemos</p>
+            <h2 className="text-2xl sm:text-3xl lg:text-3xl font-medium text-finacc-evergreen">Soluções Corporativas Integradas</h2>
           </div>
           <div className="hidden md:block w-16 h-0.5 bg-finacc-palm/30 mb-1"></div>
         </div>
 
-        {/* Ajustado para 3 colunas em Desktop para acomodar os 6 serviços */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
           {data.map((s, i) => (
             <ServiceCard 
