@@ -114,7 +114,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         number="01"
         title="Contabilidade"
         description="Serviços contabilísticos personalizados para empresas e particulares, com rigor técnico e acompanhamento contínuo das operações financeiras."
-        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768570288/business-desk-with-keyboard-report-graph-chart-pen-tablet-white-table_kl5fg7.jpg"
+        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573606/business-desk-with-keyboard-report-graph-chart-pen-tablet-white-table_u5du52.jpg"
         items={[
           "Execução de contabilidade geral e analítica",
           "Preparação de demonstrações financeiras mensais e anuais",
@@ -129,7 +129,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         number="02"
         title="Gestão Fiscal"
         description="Cumprimento rigoroso de todas as obrigações legais e fiscais, otimização tributária e planeamento estratégico para maximizar benefícios."
-        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768570289/finances-saving-economy-concept-female-accountant-banker-use-calculator_d3m0vb.jpg"
+        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573609/finances-saving-economy-concept-female-accountant-banker-use-calculator_fwyr9l.jpg"
         isEven={true}
         items={[
           "Planeamento e otimização fiscal (IRC, IRS, IVA)",
@@ -145,7 +145,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         number="03"
         title="Recursos Humanos"
         description="Gestão integrada de RH oferecendo soluções completas para as necessidades empresariais e proteção dos colaboradores."
-        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768570283/top-view-females-shaking-hands_scrhi2.jpg"
+        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573615/top-view-females-shaking-hands_hqfirg.jpg"
         items={[
           "Processamento salarial e gestão administrativa de pessoal",
           "Cumprimento de obrigações perante a Segurança Social e AT",
@@ -160,7 +160,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         number="04"
         title="Consultoria Financeira"
         description="Análise estratégica, planeamento de investimentos, avaliação de empresas e otimização de fluxos de caixa para decisões financeiras informadas e rentáveis."
-        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768570386/teamwork-scene-close-up_1_ss2juu.jpg"
+        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573613/teamwork-scene-close-up_jklnrp.jpg"
         isEven={true}
         items={[
           "Elaboração de Planos de Negócio e Estudos de Viabilidade",
@@ -176,7 +176,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         number="05"
         title="Auditoria"
         description="Validação independente e sistemática das suas demonstrações financeiras, garantindo a sua fiabilidade e conformidade com as normas contabilísticas nacionais e internacionais."
-        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768570288/office-account-results-corporate-paper-explaining_vvjlto.jpg"
+        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573609/office-account-results-corporate-paper-explaining_zvrsvc.jpg"
         items={[
           "Auditoria às demonstrações financeiras",
           "Revisão dos sistemas de controlo interno",
@@ -191,7 +191,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         number="06"
         title="Revisão Legal de Contas"
         description="Cumprimento das obrigações legais de revisão de contas, assegurando a transparência e a credibilidade das suas informações financeiras perante todas as partes interessadas."
-        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768570281/businessman-using-calculator_zyu0yh.jpg"
+        imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573609/businessman-using-calculator_i4auos.jpg"
         isEven={true}
         items={[
           "Certificação legal das contas anuais",

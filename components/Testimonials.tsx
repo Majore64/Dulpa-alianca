@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 const TestimonialCard: React.FC<{ quote: string; author: string; role: string; img: string }> = ({ quote, author, role, img }) => (
   <div className="bg-finacc-hunter p-6 border border-white/5 flex flex-col h-full mx-auto w-full snap-center relative group hover:bg-white/5 transition-colors duration-500 rounded-sm">

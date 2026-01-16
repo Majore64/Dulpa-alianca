@@ -31,6 +31,7 @@ export const Contact: React.FC = () => {
         }
       })
       .catch(error => {
+        console.error(error); // Log do erro para debugging e para satisfazer o linter TS
         setIsSubmitting(false);
         alert("Erro ao enviar o pedido. Por favor, tente novamente.");
       });
