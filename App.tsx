@@ -16,8 +16,33 @@ const ContactPage = lazy(() => import('./components/ContactPage').then(module =>
 
 export type PageType = 'home' | 'about' | 'services' | 'privacy' | 'contact';
 
-// Componente de carregamento mínimo para evitar layout shift brusco
-const LoadingFallback = () => <div className="min-h-[50vh] flex items-center justify-center"><div className="w-8 h-8 border-2 border-finacc-palm border-t-transparent rounded-full animate-spin"></div></div>;
+// Componente Visual de Carregamento (Puro)
+const LoadingFallback = () => (
+  <div className="min-h-[60vh] flex items-center justify-center bg-white">
+    <div className="flex flex-col items-center gap-3 animate-fade-in">
+      <div className="w-8 h-8 border-2 border-finacc-palm border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  </div>
+);
+
+// Wrapper Inteligente para Suspense
+// Só mostra o fallback se o carregamento demorar mais de 300ms.
+// Caso contrário, não mostra nada (evitando o flash branco).
+const SuspenseWithDelayedFallback: React.FC<{ children: React.ReactNode; fallback: React.ReactNode }> = ({ children, fallback }) => {
+  const [showFallback, setShowFallback] = useState(false);
+
+  useEffect(() => {
+    // Reseta o estado ao montar (navegação)
+    setShowFallback(false);
+    const timer = setTimeout(() => {
+      setShowFallback(true);
+    }, 300); // 300ms de delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return <Suspense fallback={showFallback ? fallback : null}>{children}</Suspense>;
+};
 
 // Configuração de Rotas para SEO e Navegação
 const PAGE_ROUTES: Record<PageType, string> = {
@@ -30,7 +55,6 @@ const PAGE_ROUTES: Record<PageType, string> = {
 
 // Função auxiliar para determinar a página atual baseada na URL
 const getPageFromUrl = (): PageType => {
-  // Garante que funciona mesmo se window não estiver definido (SSR safe, embora seja SPA)
   if (typeof window === 'undefined') return 'home';
   
   const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -39,28 +63,20 @@ const getPageFromUrl = (): PageType => {
 };
 
 const App: React.FC = () => {
-  // Inicializa o estado verificando imediatamente a posição do scroll.
   const [scrolled, setScrolled] = useState(() => 
     typeof window !== 'undefined' ? window.scrollY > 50 : false
   );
   
-  // Inicialização baseada na URL (Suporte a Deep Linking)
-  // Passamos a função diretamente para o useState para lazy initialization
   const [currentPage, setCurrentPage] = useState<PageType>(getPageFromUrl);
   
-  // Captura hash inicial se existir
   const [activeHash, setActiveHash] = useState<string | undefined>(() => {
     return typeof window !== 'undefined' ? (window.location.hash.slice(1) || undefined) : undefined;
   });
   
-  // Referência para guardar a página anterior
   const prevPageRef = useRef<PageType>(currentPage);
-  // Referência para identificar navegação via Back/Forward do browser
   const isPopState = useRef(false);
-  // Referência para o container principal para o MutationObserver
   const mainRef = useRef<HTMLElement>(null);
 
-  // Listener para Back/Forward do browser (PopState)
   useEffect(() => {
     const handlePopState = () => {
       isPopState.current = true;
@@ -72,7 +88,6 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // SEO DINÂMICO: Atualiza o título, descrição e canonical da página
   useEffect(() => {
     let title = "Dupla Aliança | Contabilidade e Auditoria em Guimarães";
     let description = "Gabinete de Contabilidade em Guimarães. Especialistas em Contabilidade, Fiscalidade, Recursos Humanos, Auditoria e Revisão Legal de Contas. Desde 2003.";
@@ -88,26 +103,23 @@ const App: React.FC = () => {
         break;
       case 'contact':
         title = "Contactos - Dupla Aliança | Agende uma Reunião";
-        description = "Entre em contacto connosco. Estamos situados em Guimarães, perto da Universidade do Minho (Azurém). Tel: 253 517 059.";
+        description = "Entre em contacto connosco. Estamos situados em Guimarães. Tel: 253 553 163 | Tlm: 938 163 691.";
         break;
       case 'privacy':
         title = "Política de Privacidade - Dupla Aliança";
         break;
       case 'home':
       default:
-        // Mantém os valores padrão
         break;
     }
 
     document.title = title;
     
-    // Atualiza a meta tag de descrição
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', description);
     }
 
-    // Atualiza a tag canonical
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink) {
       const baseUrl = 'http://www.duplaalianca.pt';
@@ -116,8 +128,6 @@ const App: React.FC = () => {
     }
   }, [currentPage]);
 
-  // CORREÇÃO CRÍTICA: IntersectionObserver + MutationObserver
-  // Isto garante que as animações 'reveal' funcionam mesmo com Lazy Loading
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -126,8 +136,14 @@ const App: React.FC = () => {
     const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          observer.unobserve(entry.target);
+          const target = entry.target as HTMLElement;
+          // Performance: Verifica se já foi observado para evitar re-processamento
+          // Utiliza dataset para manter o estado no DOM
+          if (!target.dataset.observed) {
+            target.classList.add('active');
+            target.dataset.observed = 'true';
+            observer.unobserve(target);
+          }
         }
       });
     };
@@ -137,21 +153,17 @@ const App: React.FC = () => {
       rootMargin: '0px 0px -50px 0px' 
     });
 
-    // Função que procura elementos .reveal e anexa o observer
     const scanAndObserve = () => {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(el => observer.observe(el));
     };
 
-    // 1. Executa scan inicial
     const rafId = requestAnimationFrame(scanAndObserve);
 
-    // 2. Configura MutationObserver para detetar quando o Suspense resolve e injeta conteúdo
     let mutationObserver: MutationObserver | null = null;
     
     if (mainRef.current) {
       mutationObserver = new MutationObserver((mutations) => {
-        // Se houve adição de nós (conteúdo lazy carregou), fazemos scan novamente
         const hasAddedNodes = mutations.some(m => m.addedNodes.length > 0);
         if (hasAddedNodes) {
           scanAndObserve();
@@ -169,11 +181,9 @@ const App: React.FC = () => {
       if (mutationObserver) mutationObserver.disconnect();
       cancelAnimationFrame(rafId);
     };
-  }, [currentPage]); // Re-executa sempre que a página muda para re-ligar os observers ao novo conteúdo
+  }, [currentPage]);
 
-  // useLayoutEffect para gestão do Scroll e Navegação
   useLayoutEffect(() => {
-    // Se a navegação foi via Back/Forward, deixa o browser gerir o scroll restoration nativo
     if (isPopState.current) {
       isPopState.current = false;
       prevPageRef.current = currentPage;
@@ -182,27 +192,22 @@ const App: React.FC = () => {
 
     const isPageChange = currentPage !== prevPageRef.current;
     
-    // Função helper para tentar scrollar para o hash (com retry para lazy load)
     const tryScrollToHash = (hash: string, attempts = 0) => {
       const element = document.getElementById(hash);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if (attempts < 20) {
-        // Tenta novamente a cada 100ms se o elemento não existir (max 2 seg)
-        // Isto resolve o problema de links para secções dentro de componentes lazy
         setTimeout(() => tryScrollToHash(hash, attempts + 1), 100);
       }
     };
     
     if (isPageChange) {
-      // Se mudou de página
       if (activeHash) {
         tryScrollToHash(activeHash);
       } else {
         window.scrollTo(0, 0);
       }
     } else {
-      // Se estamos na mesma página e apenas mudou o hash
       if (activeHash) {
         tryScrollToHash(activeHash);
       }
@@ -211,12 +216,10 @@ const App: React.FC = () => {
     prevPageRef.current = currentPage;
   }, [currentPage, activeHash]);
 
-  // Função central de navegação com suporte a History API
   const navigateTo = (page: PageType, hash?: string) => {
     const route = PAGE_ROUTES[page];
     const url = hash ? `${route}#${hash}` : route;
     
-    // Atualiza a URL sem recarregar a página
     if (window.location.pathname + window.location.hash !== url) {
         window.history.pushState({}, '', url);
     }
@@ -235,34 +238,28 @@ const App: React.FC = () => {
         activeHash={activeHash}
       />
       
-      {/* Adicionada ref ao main para o MutationObserver vigiar Lazy Loading */}
       <main className="flex-grow" ref={mainRef}>
-        <Suspense fallback={<LoadingFallback />}>
+        {/* Key é crucial aqui: força o componente a remontar e reiniciar o timer ao mudar de página */}
+        <SuspenseWithDelayedFallback key={currentPage} fallback={<LoadingFallback />}>
           {currentPage === 'home' && (
-            <>
-              {/* Hero é mantido como importação direta (eager) pois está acima da dobra */}
+            <div className="animate-fade-in">
               <div id="inicio" className="bg-white">
                 <Hero onNavigate={navigateTo} />
               </div>
 
-              {/* Serviços Resumido - Movido para cima */}
               <div id="servicos-resumo" className="reveal bg-white">
                 <Services onNavigate={navigateTo} />
               </div>
               
-              {/* Testemunhos - Movido para depois de Serviços */}
               <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
                 <Testimonials />
               </div>
 
-              {/* Sobre Resumido - Movido para depois de Testemunhos */}
               <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-b border-gray-100">
                 <About onNavigate={navigateTo} />
               </div>
 
-              {/* CTA Final da Home */}
               <div className="reveal bg-finacc-cream py-20 lg:py-28 relative overflow-hidden">
-                {/* Decoração de fundo */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-finacc-evergreen/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
 
@@ -281,24 +278,23 @@ const App: React.FC = () => {
                     </button>
                 </div>
               </div>
-            </>
+            </div>
           )}
 
           {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
           {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
           {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
           {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
-        </Suspense>
+        </SuspenseWithDelayedFallback>
       </main>
       
-      <Suspense fallback={null}>
+      <SuspenseWithDelayedFallback fallback={null}>
         <Footer 
           onOpenPrivacy={() => navigateTo('privacy')} 
           onNavigate={navigateTo} 
         />
-      </Suspense>
+      </SuspenseWithDelayedFallback>
       
-      {/* Botão flutuante mobile */}
       <div className="fixed bottom-6 right-6 z-40 md:hidden animate-fade-in [animation-delay:1s]">
         <button 
           onClick={() => navigateTo('contact', 'formulario')}
@@ -311,9 +307,9 @@ const App: React.FC = () => {
         </button>
       </div>
 
-      <Suspense fallback={null}>
+      <SuspenseWithDelayedFallback fallback={null}>
         <BackToTop />
-      </Suspense>
+      </SuspenseWithDelayedFallback>
     </div>
   );
 };

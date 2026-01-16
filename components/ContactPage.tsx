@@ -99,11 +99,11 @@ export const ContactPage: React.FC<ContactPageProps> = () => {
               <div className="w-full">
                 <h3 className={titleClass}>Telefones</h3>
                 <div className="flex flex-col gap-3">
-                  <a href="tel:+351253517059" className={`${textClass} hover:text-finacc-palm hover:underline`}>
-                    (+351) 253 517 059
+                  <a href="tel:+351253553163" className={`${textClass} hover:text-finacc-palm hover:underline`}>
+                    (+351) 253 553 163
                   </a>
-                  <a href="tel:+351933345890" className={`${textClass} hover:text-finacc-palm hover:underline`}>
-                    (+351) 933 345 890
+                  <a href="tel:+351938163691" className={`${textClass} hover:text-finacc-palm hover:underline`}>
+                    (+351) 938 163 691
                   </a>
                 </div>
               </div>
