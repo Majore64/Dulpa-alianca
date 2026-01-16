@@ -1,18 +1,40 @@
 
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { About } from './components/About';
-import { Services } from './components/Services';
-import { Testimonials } from './components/Testimonials';
-import { Footer } from './components/Footer';
-import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
-import { BackToTop } from './components/BackToTop';
-import { AboutPage } from './components/AboutPage';
-import { ServicesPage } from './components/ServicesPage';
-import { ContactPage } from './components/ContactPage';
+
+// Otimização: Lazy loading para componentes abaixo da dobra (Remove JS desnecessário do bundle inicial)
+// Usa padrão .then() para lidar com named exports sem alterar os ficheiros originais
+const About = lazy(() => import('./components/About').then(module => ({ default: module.About })));
+const Services = lazy(() => import('./components/Services').then(module => ({ default: module.Services })));
+const Testimonials = lazy(() => import('./components/Testimonials').then(module => ({ default: module.Testimonials })));
+const Footer = lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
+const PrivacyPolicyPage = lazy(() => import('./components/PrivacyPolicyPage').then(module => ({ default: module.PrivacyPolicyPage })));
+const BackToTop = lazy(() => import('./components/BackToTop').then(module => ({ default: module.BackToTop })));
+const AboutPage = lazy(() => import('./components/AboutPage').then(module => ({ default: module.AboutPage })));
+const ServicesPage = lazy(() => import('./components/ServicesPage').then(module => ({ default: module.ServicesPage })));
+const ContactPage = lazy(() => import('./components/ContactPage').then(module => ({ default: module.ContactPage })));
 
 export type PageType = 'home' | 'about' | 'services' | 'privacy' | 'contact';
+
+// Componente de carregamento mínimo para evitar layout shift brusco
+const LoadingFallback = () => <div className="min-h-[50vh] flex items-center justify-center"><div className="w-8 h-8 border-2 border-finacc-palm border-t-transparent rounded-full animate-spin"></div></div>;
+
+// Configuração de Rotas para SEO e Navegação
+const PAGE_ROUTES: Record<PageType, string> = {
+  'home': '/',
+  'about': '/sobre-nos',
+  'services': '/servicos',
+  'contact': '/contactos',
+  'privacy': '/politica-privacidade'
+};
+
+// Função auxiliar para determinar a página atual baseada na URL
+const getPageFromUrl = (): PageType => {
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  const entry = Object.entries(PAGE_ROUTES).find(([_, route]) => route === path);
+  return entry ? (entry[0] as PageType) : 'home';
+};
 
 const App: React.FC = () => {
   // Inicializa o estado verificando imediatamente a posição do scroll.
@@ -20,13 +42,32 @@ const App: React.FC = () => {
     typeof window !== 'undefined' ? window.scrollY > 50 : false
   );
   
-  const [currentPage, setCurrentPage] = useState<PageType>('home');
-  const [activeHash, setActiveHash] = useState<string | undefined>(undefined);
+  // Inicialização baseada na URL (Suporte a Deep Linking)
+  const [currentPage, setCurrentPage] = useState<PageType>(getPageFromUrl);
   
-  // Referência para guardar a página anterior e decidir o tipo de scroll
+  // Captura hash inicial se existir
+  const [activeHash, setActiveHash] = useState<string | undefined>(() => {
+    return window.location.hash.slice(1) || undefined;
+  });
+  
+  // Referência para guardar a página anterior
   const prevPageRef = useRef<PageType>(currentPage);
+  // Referência para identificar navegação via Back/Forward do browser
+  const isPopState = useRef(false);
 
-  // SEO DINÂMICO: Atualiza o título e a descrição da página
+  // Listener para Back/Forward do browser (PopState)
+  useEffect(() => {
+    const handlePopState = () => {
+      isPopState.current = true;
+      setCurrentPage(getPageFromUrl());
+      setActiveHash(window.location.hash.slice(1) || undefined);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // SEO DINÂMICO: Atualiza o título, descrição e canonical da página
   useEffect(() => {
     let title = "Dupla Aliança | Contabilidade e Auditoria em Guimarães";
     let description = "Gabinete de Contabilidade em Guimarães. Especialistas em Contabilidade, Fiscalidade, Recursos Humanos, Auditoria e Revisão Legal de Contas. Desde 2003.";
@@ -59,6 +100,15 @@ const App: React.FC = () => {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', description);
+    }
+
+    // Atualiza a tag canonical
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink) {
+      const baseUrl = 'http://www.duplaalianca.pt';
+      // Se for home, o path é vazio (para evitar //), caso contrário usa a rota definida
+      const path = PAGE_ROUTES[currentPage] === '/' ? '' : PAGE_ROUTES[currentPage];
+      canonicalLink.setAttribute('href', `${baseUrl}${path}`);
     }
   }, [currentPage]);
 
@@ -96,8 +146,15 @@ const App: React.FC = () => {
     };
   }, [currentPage]); // Re-executa sempre que a página muda
 
-  // useLayoutEffect corre síncronamente após as mutações do DOM mas antes do browser "pintar" o ecrã.
+  // useLayoutEffect para gestão do Scroll
   useLayoutEffect(() => {
+    // Se a navegação foi via Back/Forward, deixa o browser gerir o scroll restoration nativo
+    if (isPopState.current) {
+      isPopState.current = false;
+      prevPageRef.current = currentPage;
+      return;
+    }
+
     const isPageChange = currentPage !== prevPageRef.current;
     
     if (isPageChange) {
@@ -109,7 +166,7 @@ const App: React.FC = () => {
           if (element) {
             element.scrollIntoView({ behavior: 'auto', block: 'start' });
           }
-        }, 10);
+        }, 50);
       } else {
         window.scrollTo(0, 0);
       }
@@ -126,9 +183,19 @@ const App: React.FC = () => {
     prevPageRef.current = currentPage;
   }, [currentPage, activeHash]);
 
+  // Função central de navegação com suporte a History API
   const navigateTo = (page: PageType, hash?: string) => {
+    const route = PAGE_ROUTES[page];
+    const url = hash ? `${route}#${hash}` : route;
+    
+    // Atualiza a URL sem recarregar a página
+    if (window.location.pathname + window.location.hash !== url) {
+        window.history.pushState({}, '', url);
+    }
+
     setCurrentPage(page);
     setActiveHash(hash);
+    isPopState.current = false; // Garante que navegação manual reseta o estado de popstate
   };
 
   return (
@@ -141,61 +208,66 @@ const App: React.FC = () => {
       />
       
       <main className="flex-grow">
-        {currentPage === 'home' && (
-          <>
-            <div id="inicio" className="bg-white">
-              <Hero onNavigate={navigateTo} />
-            </div>
+        <Suspense fallback={<LoadingFallback />}>
+          {currentPage === 'home' && (
+            <>
+              {/* Hero é mantido como importação direta (eager) pois está acima da dobra */}
+              <div id="inicio" className="bg-white">
+                <Hero onNavigate={navigateTo} />
+              </div>
 
-            {/* Serviços Resumido - Movido para cima */}
-            <div id="servicos-resumo" className="reveal bg-white">
-              <Services onNavigate={navigateTo} />
-            </div>
-            
-            {/* Testemunhos - Movido para depois de Serviços */}
-            <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
-              <Testimonials />
-            </div>
+              {/* Serviços Resumido - Movido para cima */}
+              <div id="servicos-resumo" className="reveal bg-white">
+                <Services onNavigate={navigateTo} />
+              </div>
+              
+              {/* Testemunhos - Movido para depois de Serviços */}
+              <div id="testemunhos" className="reveal bg-gray-50 border-t border-b border-gray-100">
+                <Testimonials />
+              </div>
 
-            {/* Sobre Resumido - Movido para depois de Testemunhos */}
-            <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-b border-gray-100">
-              <About onNavigate={navigateTo} />
-            </div>
+              {/* Sobre Resumido - Movido para depois de Testemunhos */}
+              <div id="sobre-resumo" className="reveal bg-[#FDFCF8] border-b border-gray-100">
+                <About onNavigate={navigateTo} />
+              </div>
 
-            {/* CTA Final da Home */}
-            <div className="reveal bg-finacc-cream py-20 lg:py-28 relative overflow-hidden">
-               {/* Decoração de fundo */}
-               <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
-               <div className="absolute bottom-0 left-0 w-64 h-64 bg-finacc-evergreen/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
+              {/* CTA Final da Home */}
+              <div className="reveal bg-finacc-cream py-20 lg:py-28 relative overflow-hidden">
+                {/* Decoração de fundo */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-finacc-palm/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-finacc-evergreen/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3"></div>
 
-               <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center">
-                  <h2 className="text-3xl lg:text-5xl font-medium text-finacc-evergreen mb-6 font-serif leading-tight">
-                    Vamos construir o futuro <br className="hidden md:block" /> da sua empresa?
-                  </h2>
-                  <p className="mb-10 max-w-2xl mx-auto text-gray-600 font-light sans-serif text-lg leading-relaxed">
-                    Não deixe para amanhã a otimização que o seu negócio precisa hoje. Estamos prontos para ser o seu parceiro estratégico.
-                  </p>
-                  <button 
-                    onClick={() => navigateTo('contact', 'formulario')}
-                    className="bg-finacc-palm text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-finacc-evergreen transition-all shadow-xl text-xs rounded-sm transform hover:-translate-y-1"
-                  >
-                    Fale Connosco
-                  </button>
-               </div>
-            </div>
-          </>
-        )}
+                <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center">
+                    <h2 className="text-3xl lg:text-5xl font-medium text-finacc-evergreen mb-6 font-serif leading-tight">
+                      Vamos construir o futuro <br className="hidden md:block" /> da sua empresa?
+                    </h2>
+                    <p className="mb-10 max-w-2xl mx-auto text-gray-600 font-light sans-serif text-lg leading-relaxed">
+                      Não deixe para amanhã a otimização que o seu negócio precisa hoje. Estamos prontos para ser o seu parceiro estratégico.
+                    </p>
+                    <button 
+                      onClick={() => navigateTo('contact', 'formulario')}
+                      className="bg-finacc-palm text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-finacc-evergreen transition-all shadow-xl text-xs rounded-sm transform hover:-translate-y-1"
+                    >
+                      Fale Connosco
+                    </button>
+                </div>
+              </div>
+            </>
+          )}
 
-        {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
-        {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
-        {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
-        {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
+          {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
+          {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
+          {currentPage === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
+          {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
+        </Suspense>
       </main>
       
-      <Footer 
-        onOpenPrivacy={() => navigateTo('privacy')} 
-        onNavigate={navigateTo} 
-      />
+      <Suspense fallback={null}>
+        <Footer 
+          onOpenPrivacy={() => navigateTo('privacy')} 
+          onNavigate={navigateTo} 
+        />
+      </Suspense>
       
       {/* Botão flutuante mobile */}
       <div className="fixed bottom-6 right-6 z-40 md:hidden animate-fade-in [animation-delay:1s]">
@@ -210,7 +282,9 @@ const App: React.FC = () => {
         </button>
       </div>
 
-      <BackToTop />
+      <Suspense fallback={null}>
+        <BackToTop />
+      </Suspense>
     </div>
   );
 };
