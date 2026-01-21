@@ -15,10 +15,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const baseUrl = "https://res.cloudinary.com/dsxketzvb/image/upload";
   const imagePath = "/v1768555596/IMG_4504_qdtzo6.jpg";
   
-  // SrcSet responsivo com transformações Cloudinary:
-  // f_auto: Formato otimizado
-  // q_auto: Qualidade otimizada
-  // w_...: Várias larguras
+  // SrcSet responsivo com transformações Cloudinary
   const aboutPageMainImageSrcSet = `
     ${baseUrl}/w_400,f_auto,q_auto${imagePath} 400w,
     ${baseUrl}/w_800,f_auto,q_auto${imagePath} 800w,
@@ -48,7 +45,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       name: "Ana Machado", 
       role: "Economista\nContabilista Certificada\nRevisora Oficial de Contas", 
       desc: "Especialista em auditoria e consultoria financeira estratégica.",
-      // Imagem otimizada: recorte automático centrado no rosto (g_face), quadrado (c_fill, w_300, h_300)
       image: "https://res.cloudinary.com/dsxketzvb/image/upload/w_300,h_300,c_fill,g_face,f_auto,q_auto/v1769006623/PHOTO-2025-10-27-18-00-49_1_dlp6xe.jpg"
     },
     { 
@@ -59,20 +55,28 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     },
     { 
       name: "Fernando Saraiva", 
-      // Removido (RI) conforme solicitado
       role: "Economista\nContabilista Sénior", 
       desc: "Especializado em gestão contabilística e conformidade fiscal.",
       image: null
     }
   ];
 
+  // Helper para obter as iniciais (ex: Fernando Saraiva -> FS)
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  };
+
   return (
     <div className="bg-finacc-cream pt-24 pb-20 animate-fade-in">
-      {/* Hero Section - Aumentado padding e max-width para melhor leitura */}
+      {/* Hero Section */}
       <section className="relative py-20 lg:py-28 bg-white mb-20 lg:mb-32 border-b border-gray-100">
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <div className="max-w-4xl">
-            {/* H4 -> P */}
             <p className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-xs mb-8 sans-serif animate-fade-in-up opacity-0">A Nossa Essência</p>
             <h1 className="text-4xl lg:text-7xl font-medium text-finacc-evergreen mb-10 leading-tight font-serif animate-fade-in-up delay-100 opacity-0">
               Mais do que números,<br />somos a sua <span className="italic text-finacc-palm">Dupla Aliança</span>.
@@ -85,11 +89,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </section>
 
       <div className="container mx-auto px-6 lg:px-12">
-        {/* Quem Somos - Mais espaço entre colunas e texto mais "arejado" */}
+        {/* Quem Somos */}
         <section className="mb-32 lg:mb-40 flex flex-col lg:flex-row gap-16 lg:gap-24 items-center reveal">
           <div className="w-full lg:w-1/2 relative">
             <div className="absolute top-6 -left-6 w-full h-full border border-finacc-palm/20 z-0 rounded-sm"></div>
-            {/* Lazy loading + SrcSet para performance */}
             <img 
               src={`${baseUrl}/w_800,f_auto,q_auto${imagePath}`}
               srcSet={aboutPageMainImageSrcSet}
@@ -118,7 +121,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
         </section>
 
-        {/* Valores - Cards mais limpos, menos bordas visíveis em repouso */}
+        {/* Valores */}
         <section className="mb-32 lg:mb-40 reveal">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-gray-200 pb-8">
             <h2 className="text-3xl lg:text-4xl font-medium text-finacc-evergreen font-serif mb-4 md:mb-0">Os Nossos Valores</h2>
@@ -128,20 +131,18 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 mb-20">
             {values.map((v, i) => (
               <div key={i} className={`bg-white p-10 border border-transparent hover:border-finacc-palm/30 shadow-subtle hover:shadow-elegant hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden rounded-sm reveal delay-${i * 100 + 100}`}>
-                {/* Elemento decorativo no hover */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-finacc-palm/5 rounded-bl-full -mr-12 -mt-12 transition-transform group-hover:scale-150 duration-700"></div>
 
                 <div className="w-14 h-14 bg-finacc-cream text-finacc-palm rounded-full flex items-center justify-center mb-8 group-hover:bg-finacc-palm group-hover:text-white transition-colors duration-300 relative z-10 shadow-sm">
                   {v.icon}
                 </div>
-                {/* H3 para cards é semanticamente correto aqui */}
                 <h3 className="text-xl lg:text-2xl font-medium text-finacc-evergreen mb-5 font-serif transition-colors duration-300 relative z-10">{v.title}</h3>
                 <p className="text-gray-500 text-base leading-relaxed font-light sans-serif transition-colors duration-300 relative z-10">{v.desc}</p>
               </div>
             ))}
           </div>
 
-          {/* Citação Schopenhauer - Mais padding */}
+          {/* Citação Schopenhauer */}
           <div className="bg-white p-12 lg:p-20 border border-gray-100 shadow-sm relative overflow-hidden rounded-sm reveal">
             <div className="absolute top-0 right-0 w-40 h-40 bg-finacc-palm/5 rounded-bl-[100px]"></div>
             <div className="flex flex-col lg:flex-row gap-12 items-start relative z-10">
@@ -166,13 +167,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
         </section>
 
-        {/* Equipa - Mais espaço interno nos cards e na secção */}
+        {/* Equipa */}
         <section className="bg-finacc-evergreen p-12 lg:p-24 text-white relative overflow-hidden mb-32 rounded-sm reveal">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10">
             <div className="mb-16 max-w-3xl">
-              {/* H4 -> P */}
               <p className="text-finacc-palm font-bold uppercase tracking-[0.2em] text-xs mb-6 sans-serif">Equipa</p>
               <h2 className="text-3xl lg:text-5xl font-serif mb-8 text-white">A Nossa Equipa de Especialistas</h2>
               <p className="text-gray-300 leading-relaxed font-light sans-serif text-xl max-w-2xl">
@@ -184,14 +184,23 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               {/* Cards de Equipa */}
               {teamMembers.map((member, idx) => (
                 <div key={idx} className={`bg-white/5 p-10 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 rounded-sm group flex flex-col h-full reveal delay-${(idx + 1) * 100}`}>
-                  {member.image && (
+                  
+                  {/* Se existir imagem, mostra a foto. Se não, mostra iniciais num círculo para manter layout consistente */}
+                  {member.image ? (
                     <img 
                       src={member.image} 
                       alt={member.name}
                       className="w-24 h-24 rounded-full object-cover mb-6 border-2 border-finacc-palm/20 shadow-lg"
                       loading="lazy"
                     />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-white/5 border-2 border-finacc-palm/20 flex items-center justify-center mb-6 shadow-lg group-hover:border-finacc-palm/40 transition-colors">
+                      <span className="text-2xl font-serif text-finacc-palm font-bold tracking-wider">
+                        {getInitials(member.name)}
+                      </span>
+                    </div>
                   )}
+
                   <h3 className="text-2xl font-medium text-white mb-6 font-serif">{member.name}</h3>
                   <div className="mb-6 flex-grow">
                     <p className="text-finacc-palm text-xs font-bold uppercase tracking-widest leading-loose sans-serif whitespace-pre-line">
@@ -208,7 +217,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
         </section>
 
-        {/* CTA Final - Clean e direto */}
+        {/* CTA Final */}
         <section className="bg-white py-24 px-6 lg:px-12 text-center border-t border-gray-100 reveal">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl lg:text-5xl font-medium text-finacc-evergreen mb-8 font-serif">Pronto para dar o próximo passo?</h2>
