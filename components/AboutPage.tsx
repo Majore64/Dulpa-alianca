@@ -107,8 +107,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
           <div className="w-full lg:w-1/2">
             <h2 className="text-3xl lg:text-4xl font-medium text-finacc-evergreen mb-10 font-serif">Quem Somos</h2>
-            {/* ADICIONADO: text-justify para alinhar o texto em blocos */}
-            <div className="space-y-8 text-gray-600 text-lg leading-loose font-light sans-serif text-justify">
+            {/* CORREÇÃO AQUI: text-left em mobile, md:text-justify em desktop, hyphens-auto */}
+            <div className="space-y-8 text-gray-600 text-lg leading-loose font-light sans-serif text-left md:text-justify hyphens-auto">
               <p>
                 A <strong>Dupla Aliança Lda</strong> é uma empresa especializada em <button onClick={() => onNavigate('services')} className="text-finacc-palm hover:underline font-medium focus:outline-none">contabilidade, fiscalidade e recursos humanos</button>, dedicada a fornecer soluções financeiras personalizadas e estratégicas.
               </p>
@@ -138,8 +138,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                   {v.icon}
                 </div>
                 <h3 className="text-xl lg:text-2xl font-medium text-finacc-evergreen mb-5 font-serif transition-colors duration-300 relative z-10">{v.title}</h3>
-                {/* ADICIONADO: text-justify */}
-                <p className="text-gray-500 text-base leading-relaxed font-light sans-serif transition-colors duration-300 relative z-10 text-justify">{v.desc}</p>
+                {/* CORREÇÃO AQUI: text-left mobile */}
+                <p className="text-gray-500 text-base leading-relaxed font-light sans-serif transition-colors duration-300 relative z-10 text-left md:text-justify hyphens-auto">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -161,7 +161,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                     <cite className="text-finacc-palm font-bold uppercase tracking-widest text-xs sans-serif not-italic">Arthur Schopenhauer</cite>
                   </footer>
                 </blockquote>
-                <p className="text-gray-600 font-light leading-relaxed sans-serif max-w-2xl border-l-2 border-gray-100 pl-8 py-2 text-lg text-justify">
+                {/* CORREÇÃO AQUI: text-left mobile */}
+                <p className="text-gray-600 font-light leading-relaxed sans-serif max-w-2xl border-l-2 border-gray-100 pl-8 py-2 text-lg text-left md:text-justify hyphens-auto">
                   Esta filosofia inspira a nossa abordagem: olhamos para os desafios dos nossos clientes com uma perspetiva inovadora.
                 </p>
               </div>
@@ -177,7 +178,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             <div className="mb-16 max-w-3xl">
               <p className="text-finacc-palm font-bold uppercase tracking-[0.2em] text-xs mb-6 sans-serif">Equipa</p>
               <h2 className="text-3xl lg:text-5xl font-serif mb-8 text-white">A Nossa Equipa de Especialistas</h2>
-              <p className="text-gray-300 leading-relaxed font-light sans-serif text-xl max-w-2xl text-justify">
+              {/* CORREÇÃO AQUI: text-left mobile */}
+              <p className="text-gray-300 leading-relaxed font-light sans-serif text-xl max-w-2xl text-left md:text-justify hyphens-auto">
                 Profissionais qualificados e experientes, dedicados a oferecer o melhor serviço aos nossos clientes.
               </p>
             </div>
@@ -210,8 +212,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                     </p>
                   </div>
                   <div className="h-px w-8 bg-white/10 mb-6 group-hover:w-16 transition-all duration-500"></div>
-                  {/* ADICIONADO: text-justify */}
-                  <p className="text-gray-400 text-sm font-light leading-relaxed sans-serif group-hover:text-gray-300 transition-colors text-justify">
+                  {/* CORREÇÃO AQUI: text-left mobile */}
+                  <p className="text-gray-400 text-sm font-light leading-relaxed sans-serif group-hover:text-gray-300 transition-colors text-left md:text-justify hyphens-auto">
                     {member.desc}
                   </p>
                 </div>
