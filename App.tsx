@@ -141,7 +141,7 @@ const App: React.FC = () => {
 
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink) {
-      const baseUrl = 'http://www.duplaalianca.pt';
+      const baseUrl = 'https://www.duplaalianca.pt';
       const path = PAGE_ROUTES[currentPage] === '/' ? '' : PAGE_ROUTES[currentPage];
       canonicalLink.setAttribute('href', `${baseUrl}${path}`);
     }
