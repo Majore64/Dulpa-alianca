@@ -12,7 +12,8 @@ const TestimonialCard: React.FC<{ quote: string; author: string; role: string }>
         <p className="text-finacc-palm text-[10px] font-bold uppercase tracking-widest mt-1 sans-serif opacity-80 leading-tight">{role}</p>
     </div>
     
-    <p className="text-gray-200 font-light leading-relaxed flex-grow text-lg italic mb-8 relative z-10 font-serif opacity-90">
+    {/* Removido text-justify para evitar grandes espaços em branco em mobile. Usado text-left. */}
+    <p className="text-gray-200 font-light leading-relaxed flex-grow text-lg italic mb-8 relative z-10 font-serif opacity-90 text-left">
       {quote}
     </p>
     
@@ -74,7 +75,8 @@ export const Testimonials: React.FC = () => {
   return (
     <section className="py-12 lg:py-20 bg-finacc-evergreen relative">
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 lg:mb-16 reveal">
+        {/* CORREÇÃO AQUI: Alterado de 'items-end' para 'items-start md:items-end' */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 lg:mb-16 reveal">
           <div>
             <p className="text-finacc-palm font-bold uppercase tracking-[0.4em] text-[10px] mb-3 sans-serif">Depoimentos</p>
             <h2 className="text-3xl lg:text-4xl font-medium text-white tracking-tight">A voz dos nossos <span className="italic text-finacc-palm font-serif">Parceiros</span></h2>
