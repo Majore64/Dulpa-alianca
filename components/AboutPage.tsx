@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { PageType } from '../App';
 
@@ -39,6 +40,29 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       title: "Inovação e Estratégia",
       desc: "A nossa filosofia de trabalho combina pensamento estratégico com as mais recentes ferramentas tecnológicas, garantindo eficiência e competitividade ao seu negócio.",
       icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+    }
+  ];
+
+  const teamMembers = [
+    { 
+      name: "Ana Machado", 
+      role: "Economista\nContabilista Certificada\nRevisora Oficial de Contas", 
+      desc: "Especialista em auditoria e consultoria financeira estratégica.",
+      // Imagem otimizada: recorte automático centrado no rosto (g_face), quadrado (c_fill, w_300, h_300)
+      image: "https://res.cloudinary.com/dsxketzvb/image/upload/w_300,h_300,c_fill,g_face,f_auto,q_auto/v1769006623/PHOTO-2025-10-27-18-00-49_1_dlp6xe.jpg"
+    },
+    { 
+      name: "Cristiana Fernandes", 
+      role: "Técnica de Auditoria\nTécnica de Contabilidade\nMediadora de Seguros", 
+      desc: "Focada em soluções integradas e gestão de pessoas.",
+      image: null
+    },
+    { 
+      name: "Fernando Saraiva", 
+      // Removido (RI) conforme solicitado
+      role: "Economista\nContabilista Sénior", 
+      desc: "Especializado em gestão contabilística e conformidade fiscal.",
+      image: null
     }
   ];
 
@@ -158,12 +182,16 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {/* Cards de Equipa */}
-              {[
-                { name: "Ana Machado", role: "Economista\nContabilista Certificada\nRevisora Oficial de Contas", desc: "Especialista em auditoria e consultoria financeira estratégica." },
-                { name: "Cristiana Fernandes", role: "Técnica de Auditoria\nTécnica de Contabilidade\nMediadora de Seguros", desc: "Focada em soluções integradas e gestão de pessoas." },
-                { name: "Fernando Saraiva", role: "Economista (RI)\nContabilista Sénior", desc: "Especializado em gestão contabilística e conformidade fiscal." }
-              ].map((member, idx) => (
+              {teamMembers.map((member, idx) => (
                 <div key={idx} className={`bg-white/5 p-10 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 rounded-sm group flex flex-col h-full reveal delay-${(idx + 1) * 100}`}>
+                  {member.image && (
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full object-cover mb-6 border-2 border-finacc-palm/20 shadow-lg"
+                      loading="lazy"
+                    />
+                  )}
                   <h3 className="text-2xl font-medium text-white mb-6 font-serif">{member.name}</h3>
                   <div className="mb-6 flex-grow">
                     <p className="text-finacc-palm text-xs font-bold uppercase tracking-widest leading-loose sans-serif whitespace-pre-line">

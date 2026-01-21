@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 
 const TestimonialCard: React.FC<{ quote: string; author: string; role: string; img: string }> = ({ quote, author, role, img }) => (
@@ -44,21 +45,21 @@ export const Testimonials: React.FC = () => {
   const testimonials = [
     {
       quote: "A Dupla Aliança é um parceiro fundamental. A gestão de RH e contabilidade é impecável, permitindo-nos focar apenas na produção.",
-      author: "Carlos Fernandes",
-      role: "Gerente, Indústria Têxtil",
-      img: "https://i.pravatar.cc/150?u=carlos"
+      author: "Armindo Pinto",
+      role: "Gerente, Indústria Fabricação Plásticos",
+      img: "https://i.pravatar.cc/150?u=armindo"
     },
     {
       quote: "Competência e profissionalismo extremo. Ajudaram-me a estruturar a minha empresa desde o primeiro dia com conselhos valiosos.",
-      author: "Sofia Martins",
-      role: "Arquitetura & Design",
-      img: "https://i.pravatar.cc/150?u=sofia"
+      author: "Miguel Fernandes",
+      role: "Agenciamento Têxtil",
+      img: "https://i.pravatar.cc/150?u=miguel"
     },
     {
       quote: "Rigorosos nos prazos e muito claros na explicação das obrigações fiscais. Sinto que a minha empresa está segura.",
-      author: "Pedro Gomes",
-      role: "Empresário Restauração",
-      img: "https://i.pravatar.cc/150?u=pedro"
+      author: "Pedro Alves",
+      role: "Empresário Têxtil",
+      img: "https://i.pravatar.cc/150?u=pedroalves"
     }
   ];
 
