@@ -194,9 +194,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         isEven={true}
         items={[
           "Elaboração de Planos de Negócio e Estudos de Viabilidade",
-          "Avaliação de empresas e projetos de investimento",
-          "Reestruturação financeira e otimização de tesouraria",
-          "Apoio a candidaturas de fundos comunitários"
+          "Análise de projetos de investimento",
+          "Optimização Fiscal",
+          "Avaliação de Empresas"
         ]}
         onNavigate={onNavigate}
       />
@@ -209,7 +209,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
         imageUrl="https://res.cloudinary.com/dsxketzvb/image/upload/v1768573609/office-account-results-corporate-paper-explaining_zvrsvc.jpg"
         items={[
           "Auditoria às demonstrações financeiras",
-          "Revisão dos sistemas de controlo interno",
+          "Avaliação dos sistemas de controlo interno",
           "Auditorias específicas e de procedimentos acordados",
           "Verificação da conformidade legal e normativa"
         ]}
