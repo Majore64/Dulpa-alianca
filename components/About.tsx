@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { PageType } from '../App';
 
@@ -41,8 +42,13 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
             </h2>
             
             <div className="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-light mb-8 border-l-2 border-finacc-palm/20 pl-6">
+              {/* SEO: Links internos adicionados para contabilidade, fiscalidade e RH */}
               <p>
-                A <strong>Dupla Aliança Lda</strong> é especialista em contabilidade, fiscalidade e recursos humanos, dedicada a fornecer soluções financeiras personalizadas e estratégicas.
+                A <strong>Dupla Aliança Lda</strong> é especialista em{' '}
+                <button onClick={() => onNavigate('services', 'contabilidade')} className="text-finacc-palm hover:underline font-medium focus:outline-none cursor-pointer">contabilidade</button>,{' '}
+                <button onClick={() => onNavigate('services', 'fiscalidade')} className="text-finacc-palm hover:underline font-medium focus:outline-none cursor-pointer">fiscalidade</button> e{' '}
+                <button onClick={() => onNavigate('services', 'rh')} className="text-finacc-palm hover:underline font-medium focus:outline-none cursor-pointer">recursos humanos</button>,
+                dedicada a fornecer soluções financeiras personalizadas e estratégicas.
               </p>
               <p>
                 O nosso compromisso assenta na qualidade irrepreensível, competência técnica e confidencialidade absoluta, garantindo segurança e crescimento sustentável para a sua empresa.

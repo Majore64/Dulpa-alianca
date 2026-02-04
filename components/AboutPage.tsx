@@ -108,8 +108,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <div className="w-full lg:w-1/2">
             <h2 className="text-3xl lg:text-4xl font-medium text-finacc-evergreen mb-10 font-serif">Quem Somos</h2>
             <div className="space-y-8 text-gray-600 text-lg leading-loose font-light sans-serif text-justify hyphens-auto">
+              {/* SEO: Links Internos */}
               <p>
-                A <strong>Dupla Aliança Lda</strong> é uma empresa especializada em <span onClick={() => onNavigate('services')} className="text-finacc-palm hover:underline font-medium cursor-pointer focus:outline-none" role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNavigate('services')}>contabilidade, fiscalidade e recursos humanos</span>, dedicada a fornecer soluções financeiras personalizadas e estratégicas.
+                A <strong>Dupla Aliança Lda</strong> é uma empresa especializada em{' '}
+                <button onClick={() => onNavigate('services', 'contabilidade')} className="text-finacc-palm hover:underline font-medium cursor-pointer focus:outline-none">contabilidade</button>,{' '}
+                <button onClick={() => onNavigate('services', 'fiscalidade')} className="text-finacc-palm hover:underline font-medium cursor-pointer focus:outline-none">fiscalidade</button> e{' '}
+                <button onClick={() => onNavigate('services', 'rh')} className="text-finacc-palm hover:underline font-medium cursor-pointer focus:outline-none">recursos humanos</button>,
+                dedicada a fornecer soluções financeiras personalizadas e estratégicas.
               </p>
               <p>
                 O nosso compromisso assenta em três pilares fundamentais: qualidade irrepreensível nos serviços prestados, competência técnica da nossa equipa e confidencialidade absoluta na gestão da informação dos nossos clientes.
