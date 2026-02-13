@@ -73,10 +73,23 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onNavigate }) => 
         
         <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-400 text-[10px] uppercase tracking-widest font-medium sans-serif">
           <p className="mb-4 md:mb-0">© {new Date().getFullYear()} Dupla Aliança Lda.</p>
-          <div className="flex space-x-4">
-            <button onClick={onOpenPrivacy} className="hover:text-white transition-colors">Política de Privacidade</button>
-            <span className="text-white/10">|</span>
-            <span>Desde 2003</span>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="flex space-x-4">
+              <button onClick={onOpenPrivacy} className="hover:text-white transition-colors">Política de Privacidade</button>
+              <span className="text-white/10">|</span>
+              <span>Desde 2003</span>
+            </div>
+            
+            <div className="hidden md:block w-px h-3 bg-white/10"></div>
+            
+            <a 
+              href="https://majoredigital.pt" 
+              target="_blank" 
+              rel="nofollow noopener noreferrer"
+              className="hover:text-white transition-colors opacity-80 hover:opacity-100 flex items-center gap-1"
+            >
+              Desenvolvido por Majore Digital
+            </a>
           </div>
         </div>
       </div>
