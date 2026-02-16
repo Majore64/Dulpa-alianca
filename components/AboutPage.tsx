@@ -52,12 +52,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       role: "Técnica de Auditoria\nTécnica de Contabilidade\nMediadora de Seguros", 
       desc: "Focada em soluções integradas e gestão de pessoas.",
       image: null
-    },
-    { 
-      name: "Fernando Saraiva", 
-      role: "Economista\nContabilista Sénior", 
-      desc: "Especializado em gestão contabilística e conformidade fiscal.",
-      image: null
     }
   ];
 
@@ -186,7 +180,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {/* Layout adjusted for 2 members: centered and limited width */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
               {/* Cards de Equipa */}
               {teamMembers.map((member, idx) => (
                 <div key={idx} className={`bg-white/5 p-10 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 rounded-sm group flex flex-col h-full reveal delay-${(idx + 1) * 100}`}>
